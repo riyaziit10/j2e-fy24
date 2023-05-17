@@ -1,0 +1,39 @@
+/* Problem 13
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the i
+th
+line are
+(i, 0) and (i, height[i]).
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+Return the maximum amount of water a container can store. */
+#include <iostream>
+using namespace std;
+
+int maxContainer(int arr[], int n)
+{
+    int maxArea = 0;
+
+        // Find the area for every pair of boundaries i and j
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+                    // Calculate the area
+                    // and update the variable maxArea, if greater
+                    maxArea = max(min(arr[j], arr[i]) * (j - i), maxArea);
+        }
+    }
+    return maxArea;
+}
+
+// Driver code
+int main()
+{
+    int height[] = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+    int height2[] = { 1, 1 };
+
+    // Call the function for the first array
+    int len1 = sizeof(height) / sizeof(height[0]);
+    cout << maxContainer(height, len1);
+
+    // Call the function for the second array
+    int len2 = sizeof(height2) / sizeof(height2[0]);
+    cout << endl << maxContainer(height2, len2);
+}
