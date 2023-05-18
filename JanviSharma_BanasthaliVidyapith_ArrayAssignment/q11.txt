@@ -1,0 +1,36 @@
+class Solution {
+public:
+
+
+    int findPeakElement(vector<int>& nums) {
+        // Linear Approach
+         for(int i = 0; i<nums.size() -1 ;i++){
+             if(nums[i] > nums[i+1] ){
+                 return i;
+             }
+         }
+         return nums.size() -1 ;  
+
+
+
+
+        // Binary Approach 
+        int low = 0;
+        int high = nums.size()-1;
+        int mid ;
+
+            mid = (low + high) / 2;
+        while(low <high){
+            if(nums[mid] > nums[mid + 1]){
+                high = mid;
+            }
+            else{
+                low = mid +1;
+            }
+            mid = (low + high) / 2;
+        }
+
+
+        return low;
+    }
+};
