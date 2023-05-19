@@ -1,0 +1,43 @@
+PROBLEM 7:
+Given a string, how many different substrings exist in it that have no repeating characters? Two substrings are considered
+different if they have a different start or end index.
+Constraints:
+1 ≤ length of s ≤ 10 to the power 5
+s consists of only lowercase English letters, ascii['a'-'z'].
+
+
+SOLUTION:
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class CountUniqueSubstrings {
+    public static void main(String[] args) {
+        String s = "abac";
+        int count = countUniqueSubstrings(s);
+        System.out.println("Number of different substrings with no repeating characters: " + count);
+    }
+
+    public static int countUniqueSubstrings(String s) {
+        int count = 0;
+        Set<Character> uniqueChars = new HashSet<>();
+        
+        int left = 0;
+        int right = 0;
+        
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            
+            if (!uniqueChars.contains(c)) {
+                uniqueChars.add(c);
+                count += right - left + 1;
+                right++;
+            } else {
+                uniqueChars.remove(s.charAt(left));
+                left++;
+            }
+        }
+        
+        return count;
+    }
+}

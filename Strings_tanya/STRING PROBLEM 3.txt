@@ -1,0 +1,58 @@
+PROBLEM 3:
+An English lecture at Elementary School is aimed at teaching students the letters of the alphabet.
+The students are provided with a string word that consists of lowercase English letters. In one move, they can choose any
+index i, and let the character at that index be c. Then, the first occurrence of c to the left of i, and the first occurrence of c to
+the right of i are deleted (Note: the operation can still be carried out even if either the left or right occurrence doesn't exist).
+For example, if word = "adabacaea", and if index 4 is chosen (0-based), the first occurrence of 'a' to the left and right of index
+4 (bold, indices 2 and 6) are deleted leaving word = "adbacea".
+Find the minimum number of moves the students need to perform in order to get a word of minimal length.
+
+
+SOLUTION:
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class MinimizeWordLength {
+    public static void main(String[] args) {
+        String word = "baabacaa";
+        int minMoves = minimizeWordLength(word);
+        System.out.println("Minimum number of moves: " + minMoves);
+    }
+
+    public static int minimizeWordLength(String word) {
+        Set<Character> encounteredChars = new HashSet<>();
+        int moves = 0;
+        int left = 0;
+        int right = word.length() - 1;
+
+        while (left <= right) {
+            char leftChar = word.charAt(left);
+            char rightChar = word.charAt(right);
+
+            if (leftChar == rightChar && encounteredChars.contains(leftChar)) {
+                // Remove all occurrences of the character between left and right
+                char c = leftChar;
+                while (left <= right && (word.charAt(left) == c || word.charAt(right) == c)) {
+                    if (word.charAt(left) == c) {
+                        left++;
+                    }
+                    if (word.charAt(right) == c) {
+                        right--;
+                    }
+                }
+                moves++;
+                encounteredChars.remove(c);
+            } else {
+                encounteredChars.add(leftChar);
+                if (left != right) {
+                    encounteredChars.add(rightChar);
+                }
+                left++;
+                right--;
+            }
+        }
+
+        return moves;
+    }
+}
