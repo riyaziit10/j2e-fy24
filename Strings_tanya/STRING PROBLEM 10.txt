@@ -1,0 +1,60 @@
+PROBLEM 10:
+Given word, return the next alphabetically greater string in all permutations of that word. If there is no greater permutation,
+return the string 'no answer' instead.
+Constraints:
+● message[i] ∈ ascii[a-z]
+● |message| ≤ 10 to the power 5
+
+Solution:
+
+public class NextPermutation {
+    public static void main(String[] args) {
+        String word = "baca";
+        String nextPermutation = findNextPermutation(word);
+        System.out.println("Next permutation: " + nextPermutation);
+    }
+
+    public static String findNextPermutation(String word) {
+        char[] arr = word.toCharArray();
+
+        // Step 1: Find the first pair of adjacent characters (a, b) where a < b
+        int i = arr.length - 2;
+        while (i >= 0 && arr[i] >= arr[i + 1]) {
+            i--;
+        }
+
+        if (i < 0) {
+            // No greater permutation found
+            return "no answer";
+        }
+
+        // Step 2: Find the rightmost character greater than a
+        int j = arr.length - 1;
+        while (arr[j] <= arr[i]) {
+            j--;
+        }
+
+        // Step 3: Swap characters a and the rightmost character greater than a
+        swap(arr, i, j);
+
+        // Step 4: Sort the right substring in ascending order
+        reverse(arr, i + 1, arr.length - 1);
+
+        // Step 5: Return the result
+        return new String(arr);
+    }
+
+    private static void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    private static void reverse(char[] arr, int start, int end) {
+        while (start < end) {
+            swap(arr, start, end);
+            start++;
+            end--;
+        }
+    }
+}

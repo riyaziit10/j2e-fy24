@@ -1,0 +1,35 @@
+PROBLEM 5:
+Parentheses strings are strings containing only the characters '(' and ')'. A parentheses string is considered balanced when its
+opening parentheses align with its closing parentheses. For example, "()()" and "(()())" are balanced parentheses strings while
+")(", "())(" are not.
+Given a string consisting of the same number of opening and closing parentheses, determine the minimum number of
+character swaps required to make the string a balanced parentheses string.
+
+SOLUTION:
+
+public class BalancedParentheses {
+    public static void main(String[] args) {
+        String parenthesesString = "))((";
+        int swapCount = minimumSwaps(parenthesesString);
+        System.out.println("Minimum number of swaps: " + swapCount);
+    }
+
+    public static int minimumSwaps(String parenthesesString) {
+        Stack<Character> stack = new Stack<>();
+        int swapCount = 0;
+
+        for (char c : parenthesesString.toCharArray()) {
+            if (c == '(') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    swapCount++;
+                } else {
+                    stack.pop();
+                }
+            }
+        }
+
+        return swapCount;
+    }
+}
