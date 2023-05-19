@@ -2,7 +2,7 @@ package arraysassignmentquestions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
-public class Problem1 
+public class Question_1
 {
     public static List<Boolean> kidsWithCandies(int[] candies, int extraCandies) 
     {
