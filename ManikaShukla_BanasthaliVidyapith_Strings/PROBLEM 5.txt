@@ -1,0 +1,34 @@
+PROBLEM 5: Parentheses strings are strings containing only the characters '(' and ')'. A parentheses string is considered balanced when its opening parentheses align with its closing parentheses. For example, "()()" and "(()())" are balanced parentheses strings while ")(", "())(" are not. Given a string consisting of the same number of opening and closing parentheses, determine the minimum number of character swaps required to make the string a balanced parentheses string.
+Code:
+#include <iostream>
+#include <string>
+#include <stack>
+using namespace std;
+
+int minSwapsToBalance(const string& s) {
+    int swaps = 0;
+    int imbalance = 0;
+
+    for (char ch : s) {
+        if (ch == '(') {
+            imbalance++;
+        } else {
+            if (imbalance > 0) {
+                imbalance--;
+            } else {
+                swaps++;
+            }
+        }
+    }
+
+    return swaps;
+}
+
+int main() {
+    string s = "))((";
+
+    int minSwaps = minSwapsToBalance(s);
+    cout << "Minimum number of swaps: " << minSwaps << endl;
+
+    return 0;
+}

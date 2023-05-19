@@ -1,0 +1,36 @@
+/* PROBLEM 6: The 26 characters of the alphabet are each assigned a security value represented as an array of integers, where security_values[i] is associated with the i th character of the alphabet. Given an encrypted message, msg, and the array security_values, rearrange the characters in msg and find the minimum possible sum of the absolute differences of the security values of adjacent characters. Example: Given security_values[i] = [1, 2, 1, 3, 1, 3, 5, 7, 1, 1, 5, 5, 8, 10, 11, 1, 23, 2, 3, 7, 8, 9, 1, 6, 5, 9] and s = "afeb". Here 'a' relates to 1, 'f' relates to 3, 'e' relates to 1, and 'b' relates to 2. Some of the rearrangements are: The optimal rearrangement is "eabf" or "fbae" with a sum of 2.*/
+Code:
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int minimumSumOfDifferences(const vector<int>& security_values, const string& msg) {
+    vector<pair<int, char>> sorted_chars;
+
+    // Create a vector of pairs (security_value, character)
+    for (int i = 0; i < msg.length(); i++) {
+        sorted_chars.push_back({ security_values[msg[i] - 'a'], msg[i] });
+    }
+
+    // Sort the characters based on their security values
+    sort(sorted_chars.begin(), sorted_chars.end());
+
+    int sum = 0;
+    for (int i = 1; i < sorted_chars.size(); i++) {
+        sum += abs(sorted_chars[i].first - sorted_chars[i - 1].first);
+    }
+
+    return sum;
+}
+
+int main() {
+    vector<int> security_values = { 1, 2, 1, 3, 1, 3, 5, 7, 1, 1, 5, 5, 8, 10, 11, 1, 23, 2, 3, 7, 8, 9, 1, 6, 5, 9 };
+    string msg = "afeb";
+
+    int minSum = minimumSumOfDifferences(security_values, msg);
+    cout << "Minimum sum of differences: " << minSum << endl;
+
+    return 0;
+}

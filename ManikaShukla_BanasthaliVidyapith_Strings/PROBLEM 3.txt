@@ -1,0 +1,68 @@
+/* PROBLEM 3: An English lecture at Elementary School is aimed at teaching students the letters of the alphabet. The students are provided with a string word that consists of lowercase English letters. In one move, they can choose any index i, and let the character at that index be c. Then, the first occurrence of c to the left of i, and the first occurrence of c to the right of i are deleted (Note: the operation can still be carried out even if either the left or right occurrence doesn't exist). For example, if word = "adabacaea", and if index 4 is chosen (0-based), the first occurrence of 'a' to the left and right of index 4 (bold, indices 2 and 6) are deleted leaving word = "adbacea". Find the minimum number of moves the students need to perform in order to get a word of minimal length.*/
+
+Code:
+#include <iostream>
+#include <string>
+using namespace std;
+
+int minMovesToMinimalWord(string word) {
+    int moves = 0;
+
+    while (true) {
+        bool deletion = false;
+        string minimalWord;
+
+        int i = 0;
+        while (i < word.length()) {
+            char ch = word[i];
+            int left = i - 1;
+            int right = i + 1;
+            bool deleted = false;
+
+            while (left >= 0 && word[left] == ch) {
+                deletion = true;
+                deleted = true;
+                left--;
+            }
+         while (right < word.length() && word[right] == ch) {
+                deletion = true;
+                right++;
+            }
+
+            if (!deleted) {
+                minimalWord += ch;
+                i++;
+            }
+            else {
+                i = right;
+            }
+        }
+
+        if (!deletion) {
+            break;
+        }
+
+        word = minimalWord;
+        moves++;
+    }
+while (right < word.length() && word[right] == ch) {
+                deletion = true;
+                right++;
+            }
+
+            if (!deleted) {
+                minimalWord += ch;
+                i++;
+            }
+            else {
+                i = right;
+            }
+        }
+
+        if (!deletion) {
+            break;
+        }
+
+        word = minimalWord;
+        moves++;
+    }

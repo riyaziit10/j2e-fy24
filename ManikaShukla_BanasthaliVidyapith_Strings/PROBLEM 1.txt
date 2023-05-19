@@ -1,0 +1,42 @@
+/*PROBLEM 1: Two strings are said to be the same if they are of the same length and have the same character at each index. Backspacing in a string removes the previous character in the string. Given two strings containing lowercase English letters and the character '#' which represents a backspace key, determine if the two final strings are equal. Return 1 if they are equal or 0 if they are not. Note that backspacing an empty string results in an empty string.*/
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool backspaceCompare(string s1, string s2) {
+    string final_s1, final_s2;
+    
+    for (char ch : s1) {
+        if (ch == '#') {
+            if (!final_s1.empty()) {
+                final_s1.pop_back();
+            }
+        } else {
+            final_s1.push_back(ch);
+        }
+    }
+    
+    for (char ch : s2) {
+        if (ch == '#') {
+            if (!final_s2.empty()) {
+                final_s2.pop_back();
+            }
+        } else {
+            final_s2.push_back(ch);
+        }
+    }
+return final_s1 == final_s2;
+}
+
+int main() {
+    string s1 = "axx#bb#c";
+    string s2 = "axbd#c#c";
+
+    if (backspaceCompare(s1, s2)) {
+        cout << "The two strings are equal." << endl;
+        return 1;
+    } else {
+        cout << "The two strings are not equal." << endl;
+        return 0;
+    }
+}
