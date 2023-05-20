@@ -1,0 +1,31 @@
+class Solution {
+    public boolean checkIfPangram(String sentence) 
+    {
+        boolean flag=false;
+        for(char c='a';c<='z';c++)
+        {
+            boolean pangram=check_pangram(c,sentence);
+            if(pangram==false)
+            {
+                flag=false;
+                break;
+            }
+            else
+            {
+                flag=true;
+            }
+        }
+        return flag;
+    }
+    public boolean check_pangram(char ch,String str)
+    {
+        for(char c: str.toCharArray())
+        {
+            if(c==ch)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}

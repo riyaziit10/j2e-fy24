@@ -1,0 +1,44 @@
+class HelloWorld {
+    
+    public void nextPermutation(String c) 
+    {
+        char ch[]=c.toCharArray();
+        int i=ch.length-2;
+        while(i>=0 && ch[i]>=ch[i+1])
+        {
+            i--;
+        }
+        if(i>=0)
+        {
+            int j=ch.length-1;
+            while(j>=0 && ch[j]<=ch[i])
+                j--;
+                swap(ch,i,j);            
+        }
+        reverse(ch,i+1);
+        System.out.println(ch);
+    }
+    public void swap(char ch[],int i,int j)
+        {
+            char temp;
+            temp=ch[i];
+            ch[i]=ch[j];
+            ch[j]=temp;
+        }
+        public void reverse(char ch[],int start)
+        {
+            int end=ch.length-1;
+            while(start<end)
+            {
+                swap(ch,start,end);
+                start++;
+                end--;
+            }
+        }
+    public static void main(String[] args)
+    {
+        String c="baca";
+        HelloWorld ob=new HelloWorld();
+        ob.nextPermutation(c);
+    }
+}
