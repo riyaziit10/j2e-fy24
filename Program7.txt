@@ -1,21 +1,37 @@
-class Solution {
-    public int maxSubArray(int[] nums)
-    {
-        int sum=0;
-        int max=nums[0];
+import java.util.HashSet;
+import java.util.Set;
 
-        for(int i=0;i<nums.length;i++)
-        {
-            sum=sum+nums[i];
-            if(sum>max)
-            {
-                max=sum;
-            }
-            if(sum<0)
-            {
-                sum=0;
+public class UniqueSubstringCount {
+    public static int countUniqueSubstrings(String s) {
+        int n = s.length();
+        Set<String> uniqueSubstrings = new HashSet<>();
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                String substring = s.substring(i, j);
+                if (isUnique(substring)) {
+                    uniqueSubstrings.add(substring);
+                }
             }
         }
-        return max;
+
+        return uniqueSubstrings.size();
+    }
+
+    private static boolean isUnique(String s) {
+        Set<Character> seen = new HashSet<>();
+        for (char c : s.toCharArray()) {
+            if (seen.contains(c)) {
+                return false;
+            }
+            seen.add(c);
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String s = "abcdabc";
+        int uniqueCount = countUniqueSubstrings(s);
+        System.out.println("Number of unique substrings: " + uniqueCount);
     }
 }

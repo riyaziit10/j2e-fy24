@@ -1,48 +1,28 @@
-class Solution {
-    public int search(int[] nums, int target)
-    {
-        int low=0;
-        int high=nums.length-1;
-        int mid;
-        while(low<=high)
-        {
-            mid=(low+high)/2;
-             if(nums[low]==target)
-            {
-                return low;
-            }
-            if(nums[high]==target)
-            {
-                return high;
-            }
-           
-            if(nums[mid]==target)
-            {
-                return mid;
-            }
-            if(nums[low]<=nums[mid])  //left part sorted
-            {
-                if(target>=nums[low]&&target<nums[mid])
-                {
-                    high=mid-1;
-                }
-                else
-                {
-                    low=mid+1;
-                }
-            }
-            else            //right part sorted
-            {
-                if(target>=nums[mid] && target<nums[high])
-                {
-                    low=mid+1;
-                }
-                else
-                {
-                    high=mid-1;
+public class MinimumParenthesesSwaps {
+    public static int minSwaps(String s) {
+        int swaps = 0;
+        int openCount = 0;
+        int imbalance = 0;
+
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                openCount++;
+            } else {
+                if (openCount == 0) {
+                    imbalance++;
+                } else {
+                    openCount--;
                 }
             }
         }
-        return -1;
+
+        swaps = imbalance / 2;
+        return swaps;
+    }
+
+    public static void main(String[] args) {
+        String parenthesesString = "))((";
+        int minSwaps = minSwaps(parenthesesString);
+        System.out.println("Minimum number of swaps required: " + minSwaps);
     }
 }

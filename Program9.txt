@@ -1,34 +1,42 @@
-class Solution {
-    public void sortColors(int[] nums) {
-        int lo=0;
-        int hi=nums.length-1;
-        int mid=0;
-        int temp;
-        while(mid<=hi)
+class HelloWorld
+{
+    public static String compression(String str)
+    {
+        String s=str.charAt(0)+"";
+        int count=1;
+        for(int i=1;i<str.length();i++)
         {
-            switch(nums[mid])
+            char curr=str.charAt(i);
+            char prev=str.charAt(i-1);
+            
+            if(curr==prev)
             {
-                 
-                case 0: temp=nums[lo];
-                        nums[lo]=nums[mid];
-                        nums[mid]=temp;
-                        lo++;
-                        mid++;
-                        break;
-                    
-                case 1: mid++;
-                        break;
-                    
-                case 2: temp=nums[mid];
-                        nums[mid]=nums[hi];
-                        nums[hi]=temp;
-                        hi--;
-                        break;
-                       
-                    
-                default: System.out.println("INVALID CHOICE");
-                         break;
+                count++;
+            }
+            else
+            {
+                if(count>1)
+                {
+                    s=s+count;
+                    count=1;
+                }
+                s=s+curr;
             }
         }
+        if(count>1)
+        {
+            s=s+count;
+            count=1;
+        }
+        return s;
+    }
+    
+    
+    public static void main(String[] args) {
+        HelloWorld ob=new HelloWorld();
+        String str="aaabbccd";
+        String str2="";
+        str2=ob.compression(str);
+        System.out.println(str2);
     }
 }
