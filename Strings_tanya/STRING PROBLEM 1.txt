@@ -1,0 +1,38 @@
+STRING PROBLEM 1:
+Two strings are said to be the same if they are of the same length and have the same character at each index. Backspacing in
+a string removes the previous character in the string.
+Given two strings containing lowercase English letters and the character '#' which represents a backspace key, determine if the
+two final strings are equal. Return 1 if they are equal or 0 if they are not.
+Note that backspacing an empty string results in an empty string.
+
+
+SOLUTION:
+public class StringComparison {
+    public static void main(String[] args) {
+        String s1 = "axx#bb#c";
+        String s2 = "axbd#c#c";
+        int result = compareStrings(s1, s2);
+        System.out.println(result);
+    }
+
+    public static int compareStrings(String s1, String s2) {
+        String finalS1 = applyBackspace(s1);
+        String finalS2 = applyBackspace(s2);
+
+        return finalS1.equals(finalS2) ? 1 : 0;
+    }
+
+    private static String applyBackspace(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if (c == '#') {
+                if (sb.length() > 0) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+}

@@ -1,0 +1,85 @@
+Problem 6:
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+Implement the LRUCache class:
+i) LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+ii) int get(int key) Return the value of the key if the key exists, otherwise return -1.
+iii) void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value
+pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+The functions get and put must each run in O(1) average time complexity.
+
+SOLUTION:
+import java.util.HashMap;
+import java.util.Map;
+
+class LRUCache {
+    class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private Map<Integer, Node> cache;
+    private int capacity;
+    private Node head;
+    private Node tail;
+
+    public LRUCache(int capacity) {
+        this.cache = new HashMap<>();
+        this.capacity = capacity;
+        this.head = new Node(0, 0);
+        this.tail = new Node(0, 0);
+        this.head.next = this.tail;
+        this.tail.prev = this.head;
+    }
+
+    public int get(int key) {
+        if (cache.containsKey(key)) {
+            Node node = cache.get(key);
+            removeNode(node);
+            addToHead(node);
+            return node.value;
+        }
+        return -1;
+    }
+
+    public void put(int key, int value) {
+        if (cache.containsKey(key)) {
+            Node node = cache.get(key);
+            node.value = value;
+            removeNode(node);
+            addToHead(node);
+        } else {
+            Node newNode = new Node(key, value);
+            if (cache.size() >= capacity) {
+                Node removedNode = removeTail();
+                cache.remove(removedNode.key);
+            }
+            addToHead(newNode);
+            cache.put(key, newNode);
+        }
+    }
+
+    private void removeNode(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void addToHead(Node node) {
+        node.next = head.next;
+        node.next.prev = node;
+        head.next = node;
+        node.prev = head;
+    }
+
+    private Node removeTail() {
+        Node removedNode = tail.prev;
+        removeNode(removedNode);
+        return removedNode;
+    }
+}

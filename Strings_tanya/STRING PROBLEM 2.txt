@@ -1,0 +1,33 @@
+PROBLEM 2:
+Data, in the form of a binary string has to be sent across two servers. However, according to a new network control protocol,
+data can only be sent in the form of binary strings that have no two adjacent characters same. Such binary strings with no two
+adjacent characters same are called special strings. Any data to be transmitted is first broken into one/numerous
+subsequences that are special strings and then each special string is sent as a data packet across the connected servers.
+Given a binary string that has to be sent across two servers, find the minimum number of data packets it will be broken into.
+Note: A subsequence of a string is obtained by deleting some characters from the string while maintaining the order. For
+example, "011" is a subsequence of "0101" while "100" is not.
+
+
+SOLUTION 2:
+
+public class DataPackets {
+    public static void main(String[] args) {
+        String binaryString = "00100";
+
+        int packetCount = findMinimumPackets(binaryString);
+        System.out.println("Minimum number of data packets: " + packetCount);
+    }
+
+    public static int findMinimumPackets(String binaryString) {
+        int packetCount = 0;
+        int i = 0;
+        while (i < binaryString.length()) {
+            packetCount++;
+            char currentChar = binaryString.charAt(i);
+            while (i < binaryString.length() && binaryString.charAt(i) == currentChar) {
+                i++;
+            }
+        }
+        return packetCount;
+    }
+}

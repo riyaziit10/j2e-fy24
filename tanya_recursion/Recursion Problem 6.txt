@@ -1,0 +1,37 @@
+Problem 6:
+Print sums of all subsets of a given set of size n.
+
+SOLUTION:
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubsetSums {
+    public static void findSubsetSums(int[] set, int n) {
+        List<Integer> subset = new ArrayList<>();
+        generateSubsetSums(set, subset, 0, n);
+    }
+
+    private static void generateSubsetSums(int[] set, List<Integer> subset, int index, int n) {
+        if (index == n) {
+            int sum = 0;
+            for (int num : subset) {
+                sum += num;
+            }
+            System.out.println(sum);
+            return;
+        }
+
+        generateSubsetSums(set, subset, index + 1, n);
+
+        subset.add(set[index]);
+        generateSubsetSums(set, subset, index + 1, n);
+        subset.remove(subset.size() - 1);
+    }
+
+    public static void main(String[] args) {
+        int[] set = {1, 2, 3};
+        int n = set.length;
+
+        findSubsetSums(set, n);
+    }
+}
