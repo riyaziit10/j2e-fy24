@@ -1,0 +1,51 @@
+Problem 3:
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the
+values in the list's nodes (i.e., only nodes themselves may be changed.
+
+SOLUTION:
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class SwapNodesInPairs {
+    public static ListNode swapPairs(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode current = dummy;
+
+        while (current.next != null && current.next.next != null) {
+            ListNode firstNode = current.next;
+            ListNode secondNode = current.next.next;
+
+           
+            firstNode.next = secondNode.next;
+            current.next = secondNode;
+            current.next.next = firstNode;
+
+            current = current.next.next;
+        }
+
+        return dummy.next;
+    }
+
+    public static void main(String[] args) {
+        
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+
+        ListNode swappedList = swapPairs(head);
+
+        
+        while (swappedList != null) {
+            System.out.print(swappedList.val + " ");
+            swappedList = swappedList.next;
+        }
+    }
+}

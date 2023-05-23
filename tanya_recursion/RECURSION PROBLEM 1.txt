@@ -1,0 +1,38 @@
+Recursion Assignment Questions
+Problem 1:
+Print all possible strings of length k that can be formed from a set of n characters.
+
+SOLUTION:
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StringPermutations {
+    public static void printStrings(char[] characters, int k) {
+        List<String> permutations = new ArrayList<>();
+        backtrack(characters, k, new StringBuilder(), permutations);
+        for (String permutation : permutations) {
+            System.out.println(permutation);
+        }
+    }
+
+    private static void backtrack(char[] characters, int k, StringBuilder current, List<String> permutations) {
+        if (current.length() == k) {
+            permutations.add(current.toString());
+            return;
+        }
+
+        for (char c : characters) {
+            current.append(c);
+            backtrack(characters, k, current, permutations);
+            current.deleteCharAt(current.length() - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+        char[] characters = {'a', 'b', 'c'};
+        int k = 3;
+
+        printStrings(characters, k);
+    }
+}

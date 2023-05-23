@@ -1,0 +1,76 @@
+Problem 5:
+Given an integer n, return a list of all possible full binary trees with n nodes. Each node of each tree in the answer must have
+Node.val == 0.
+Each element of the answer is the root node of one possible tree. You may return the final list of trees in any order.
+A full binary tree is a binary tree where each node has exactly 0 or 2 children.
+
+
+SOLUTION:
+import java.util.ArrayList;
+import java.util.List;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+
+public class FullBinaryTrees {
+    public static List<TreeNode> generateFullBinaryTrees(int n) {
+        List<TreeNode> result = new ArrayList<>();
+
+        
+        if (n % 2 == 0 || n < 1) {
+            return result;
+        }
+
+        
+        if (n == 1) {
+            TreeNode node = new TreeNode(0);
+            result.add(node);
+            return result;
+        }
+
+       
+        for (int leftSize = 1; leftSize < n; leftSize += 2) {
+            int rightSize = n - 1 - leftSize;
+
+            List<TreeNode> leftSubtrees = generateFullBinaryTrees(leftSize);
+            List<TreeNode> rightSubtrees = generateFullBinaryTrees(rightSize);
+
+           
+            for (TreeNode left : leftSubtrees) {
+                for (TreeNode right : rightSubtrees) {
+                    TreeNode root = new TreeNode(0);
+                    root.left = left;
+                    root.right = right;
+                    result.add(root);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        List<TreeNode> fullBinaryTrees = generateFullBinaryTrees(n);
+        for (TreeNode root : fullBinaryTrees) {
+            printTree(root);
+            System.out.println();
+        }
+    }
+
+    public static void printTree(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.print(root.val + " ");
+        printTree(root.left);
+        printTree(root.right);
+    }
+}
