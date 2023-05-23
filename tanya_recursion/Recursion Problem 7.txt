@@ -1,0 +1,45 @@
+Problem 7:
+0/1 Knapsack Problem: We are given N items where each item has some weight and profit associated with it. We are also
+given a bag with capacity W, [i.e., the bag can hold at most W weight in it]. The target is to put the items into the bag such that
+the sum of profits associated with them is the maximum possible.
+The constraint here is we can either put an item completely into the bag or cannot put it at all [It is not possible to put a part of
+an item into the bag].
+
+SOLUTION:
+
+public class Knapsack {
+    public static int knapsack(int[] weights, int[] profits, int capacity) {
+        int n = weights.length;
+
+        
+        int[][] dp = new int[n + 1][capacity + 1];
+
+        
+        for (int i = 1; i <= n; i++) {
+            int weight = weights[i - 1];
+            int profit = profits[i - 1];
+
+            for (int w = 1; w <= capacity; w++) {
+                
+                if (weight <= w) {
+                    dp[i][w] = Math.max(profit + dp[i - 1][w - weight], dp[i - 1][w]);
+                } else {
+                   
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+
+       
+        return dp[n][capacity];
+    }
+
+    public static void main(String[] args) {
+        int[] weights = {2, 3, 4, 5};
+        int[] profits = {3, 4, 5, 6};
+        int capacity = 5;
+
+        int maxProfit = knapsack(weights, profits, capacity);
+        System.out.println("Maximum Profit: " + maxProfit);
+    }
+}
