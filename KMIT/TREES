@@ -1,0 +1,428 @@
+Question 1:
+Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+ 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p==null && q==null)
+        {
+            return true;
+        }
+        if(p==null || q==null)
+        {
+            return false;
+        }
+        if(p.val!=q.val)
+        {
+            return false;
+        }
+        else{
+       return isSameTree(p.right,q.right) && isSameTree(p.left,q.left);}
+    }
+}
+
+
+Question 2:
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+ 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) 
+    {
+       if(root==null)
+        {
+            return true;
+        }
+        else
+        {
+            return isMirror(root.right,root.left);
+        }
+    }
+         public boolean isMirror(TreeNode p,TreeNode q)
+         {
+             if(p==null && q==null)
+             {
+                 return true;
+             }
+             if(p==null || q==null)
+                {
+                    return false;
+                }
+             if(p.val!=q.val)
+             {
+                 return false;
+             }
+             else
+             {
+                 return isMirror(p.left,q.right) && isMirror(p.right,q.left);
+             }
+            
+             
+                
+         }
+}
+Question 3:
+Given the root of a binary tree, invert the tree, and return its root.
+ 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if(root==null ) return root;
+        swap(root);
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
+    }
+    public  void swap(TreeNode p)
+    {
+        
+        TreeNode temp=p.left;
+        p.left=p.right;
+        p.right=temp;
+        
+    }
+}
+
+Question 4:
+Given a binary tree, determine if it is height-balanced
+.
+ 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if(root==null)
+        {
+            return true;
+        }
+
+        else  if(Math.abs(height(root.left)-height(root.right))>1)
+             {
+                 return false;
+             }
+        
+        else
+        {
+            return isBalanced(root.left) && isBalanced(root.right);
+        }
+    }
+    public int  height(TreeNode root)
+    {
+        if(root==null)
+        {
+            return 0;
+        }
+        else
+        {
+          
+                 return 1+Math.max(height(root.left),height(root.right));
+             
+             
+        }
+    }
+}
+
+Question 5:
+You are given two binary trees root1 and root2.
+Imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge the two trees into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of the new tree.
+Return the merged tree.
+Note: The merging process must start from the root nodes of both trees.
+ 
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+    
+     if(root1==null && root2==null) return null;
+
+       else if(root1==null )
+        {
+           return root2;
+         }
+       else   if(root2==null)
+        {
+           return root1;
+        }
+        
+
+        root1.val=root1.val+root2.val;
+        
+   root1.left=mergeTrees( root1.left,root2.left);
+       root1.right= mergeTrees(root1.right,root2.right);
+         return root1; 
+    }
+   
+}
+
+Question 6:
+Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+A valid BST is defined as follows:
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if(root==null) return true;
+     //   if(root.right!=null && root.val==root.right.val) return false;
+       // if(root.left!=null && root.val==root.left.val) return false;
+        List<Integer> al=new ArrayList<>();
+        List<Integer> al1=new ArrayList<>();
+        inorder(root,al);
+      for(int i=0;i<al.size()-1;i++)
+      {
+          if(al.get(i)<al.get(i+1))
+          {
+              continue;
+          }
+          else
+          {
+              return false;
+          }
+      }
+      return true;
+        
+        
+    }
+     public void inorder(TreeNode root,List<Integer> al)
+     {
+         if(root==null) return;
+         inorder(root.left,al);
+         al.add(root.val);
+         
+         inorder(root.right,al);
+
+     }
+
+
+Question 7:
+kth Smallest Element in a BST
+Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.
+ 
+ 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        List<Integer> al=new ArrayList<>();
+        inorder(root,al);
+        return al.get(k-1);
+    }
+    public void inorder(TreeNode root,List<Integer> al)
+    {
+        if(root==null) return ;
+        inorder(root.left,al);
+        al.add(root.val);
+        inorder(root.right,al);
+    }
+}
+
+Question 8:
+Given an integer array nums where the elements are sorted in ascending order, convert it to a 
+height-balanced
+ binary search tree.
+ 
+.
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+    TreeNode ans=  create(nums,0,nums.length-1);
+    return ans;
+
+    }
+    public TreeNode create(int[] nums,int l,int h)
+    {
+        if(l>h)
+        {
+            return null;
+        }
+        int mid=(l+h)/2;
+        TreeNode node=new TreeNode(nums[mid]);
+        node.left=create(nums,l,mid-1);
+        node.right=create(nums,mid+1,h);
+        return node;
+    }
+}
+
+Question 9:
+ Range Sum of BST
+Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high].
+ 
+.
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int rangeSumBST(TreeNode root, int low, int high) {
+      List<Integer> al=new ArrayList<>();
+      order(root,low,high,al); 
+      int sum=0;
+      for(int i=0;i<al.size();i++) sum=sum+al.get(i); 
+      return sum;
+    }
+    public void order(TreeNode root, int low, int high,List<Integer> al)
+    {
+        if(root==null) return;
+       if(root.val>=low && root.val<=high)
+       {
+           al.add(root.val);
+    
+       }
+       order(root.left,low,high,al);
+       order(root.right,low,high,al);
+    }
+}
+
+Question 10:
+You are given the root of a binary search tree (BST) and an integer val.
+Find the node in the BST that the node's value equals val and return the subtree rooted with that node. If such a node does not exist, return null.
+ 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        while (root != null) {
+            if (val < root.val) root = root.left;
+            else if (val > root.val) root = root.right;
+            else return root;
+        }
+        return root;
+    }
+}
+

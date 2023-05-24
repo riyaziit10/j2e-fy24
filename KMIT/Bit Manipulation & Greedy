@@ -1,0 +1,287 @@
+Question 1:
+ You are given N fruits. The weight of the fruits is represented by an array A. All those fruits which have the same weight can be sliced in one step. Task: Your task is to determine the number of steps to slice all the fruits. import java.io.*;
+
+import java.util.*;
+public class TestClass {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter wr = new PrintWriter(System.out);
+        int T = Integer.parseInt(br.readLine().trim());
+        for(int t_i = 0; t_i < T; t_i++)
+        {
+            int N = Integer.parseInt(br.readLine().trim());
+            String[] arr_A = br.readLine().split(" ");
+            int[] A = new int[N];
+            for(int i_A = 0; i_A < arr_A.length; i_A++)
+            {
+                A[i_A] = Integer.parseInt(arr_A[i_A]);
+            }
+
+
+            int out_ = solve(N, A);
+            System.out.println(out_);
+            
+         }
+
+
+         wr.close();
+         br.close();
+    }
+    static int solve(int N, int[] A){
+        Set<Integer> s=new HashSet<>();
+     for(int i=0;i<N;i++)
+     {
+        s.add(A[i]);
+     }
+    return s.size();
+    }
+}
+
+
+
+Question 2: You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1. You may assume that you have an infinite number of each kind of coin.
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int dp[] =new int[amount+1];
+        Arrays.fill(dp,amount+1);
+        dp[0]=0;
+        for(int i=1;i<amount+1;i++)
+        {
+            for(int j=0;j<coins.length;j++)
+            {
+                if(i-coins[j]>=0)
+                {
+                    dp[i]=Math.min(dp[i],1+dp[i-coins[j]]);
+                }
+            }
+            
+        }
+          if(dp[amount]<amount+1) return dp[amount];
+         else  return -1;
+    }
+}
+
+
+Question 3: There are n boxes with different quantities of candies in each of them. The 𝑖-th box has 𝑎𝑖 candies inside. You also have n friends that you want to give the candies to, so you decided to give each friend a box of candies. But, you don't want any friends to get upset so you decided to eat some (possibly none) candies from each box so that all boxes have the same quantity of candies in them. Note that you may eat a different number of candies from different boxes and you cannot add candies to any of the boxes. What's the minimum total number of candies you have to eat to satisfy the requirements?
+
+import java.util.*;
+
+public class Main
+{
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int n=sc.nextInt();
+		int[] arr=new int[n];
+		for(int i=0;i<n;i++)
+		{
+		    arr[i]=sc.nextInt();
+		    
+		}
+		int min=arr[0];
+		int c=0;
+		for(int i=1;i<n;i++)
+		{
+		    min=Math.min(arr[i],min);
+		}
+		for(int i=0;i<n;i++)
+		{
+		    c=c+arr[i]-min;
+		}
+		System.out.println(c);
+		
+	}
+}
+Question 4:
+ You have N pills of characteristic values [a1, a2…..an] On each day i, you can take the ith pill and increase your health by ai points or Do nothing and take 1 point of damage H = H - 1, where H is a value denoting your health. You die if your health becomes zero. Initially H = V (where V is a value given in the input). What is the minimum number of pills you should take to survive for N days. 
+
+import java.util.*;
+public class Main
+{
+	public static void main(String[] args) {
+	    Scanner sc=new Scanner(System.in);
+		int n=sc.nextInt();
+		int v=sc.nextInt();
+		int ct=0;
+		int arr[]=new int[n];
+		for(int i=0;i<n;i++)
+		{
+		    arr[i]=sc.nextInt();
+		}
+		for(int i=0;i<n && v>0 ;i++)
+		{
+		    if(arr[i]>=v)
+		    {
+		        v=v+1;
+		        ct++;
+		        
+		    }
+		    else{
+		        v=v-1;
+		         
+		    }
+		    
+		}
+		System.out.println(ct);
+	}
+}
+
+Question 5:
+Given an integer array nums of unique elements, return all possible 
+subsets (the power set).
+The solution set must not contain duplicate subsets. Return the solution in any order.
+ 
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        int n=nums.length;
+        Queue<List<Integer>> q=new  LinkedList<>();
+       
+        subset(nums,n,0,q,new ArrayList<>());
+        List<List<Integer>> ans=new ArrayList<>();
+        System.out.println(q);
+        for(List<Integer> i:q)
+        {
+            if(!ans.contains(i))
+            {
+                ans.add(i);
+            }
+        }
+        return ans;
+
+
+    }
+    public void subset(int[] arr,int nd,int ind,Queue<List<Integer>> q,List<Integer> ds)
+    {
+        if(ind==arr.length)
+        {
+            q.add(new LinkedList<>(ds));
+            return;
+        }
+        ds.add(arr[ind]);
+        subset(arr,nd,ind+1,q,ds);
+        ds.remove(ds.size()-1);
+        subset(arr,nd,ind+1,q,ds);
+
+
+    }
+}
+
+
+
+Question 6: 
+Single Number Given an array of integers, every element appears thrice except for one, which occurs once. Find that element that does not appear thrice. NOTE: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+
+public int singleNumber(int[] nums) {
+    int ans = 0;
+    for(int i = 0; i < 32; i++) {
+        int sum = 0;
+        for(int j = 0; j < nums.length; j++) {
+            if(((nums[j] >> i) & 1) == 1) {
+                sum++;
+                sum %= 3;
+            }
+        }
+        if(sum != 0) {
+            ans |= sum << i;
+        }
+    }
+    return ans;
+}
+
+Question 7: 
+Min XOR value Problem Description Given an integer array A of N integers, find the pair of integers in the array which have minimum XOR value. Report the minimum XOR value.
+ Problem Constraints 2 <= length of the array <= 100000 0 <= A[i] <= 10 9 
+Input Format First and only argument of input contains an integer array A. 
+Output Format Return a single integer denoting minimum xor value. 
+
+class Solution{
+
+    static int minxorpair(int N, int arr[]){
+        Arrays.sort(arr);
+        int min=Integer.MAX_VALUE;
+        for(int i=0;i<N-1;i++)
+        {
+            min=Math.min(arr[i]^arr[i+1],min);
+        }
+        return min;
+    }
+}
+Question 8:
+Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+
+class Solution {
+    public int singleNumber(int[] nums) {
+        int ans=0;
+       for(int i=0;i<nums.length;i++)
+       {
+         ans=ans^nums[i];
+       }
+       return ans;
+      
+    }
+}
+
+Question 9:
+The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+Given two integers x and y, return the Hamming distance between them.
+ 
+
+class Solution {
+    public int hammingDistance(int x, int y) {
+        String n1=bin(x);
+        String n2=bin(y);
+        int ct=0;
+        if(n1.length()>n2.length())
+        {
+            for(int i=n2.length();i<n1.length();i++)
+            {
+                n2='0'+n2;
+            }
+        }
+        else
+        {
+            for(int i=n1.length();i<n2.length();i++)
+            {
+            n1='0'+n1;
+            }
+        }
+
+        
+        for(int i=0;i<n1.length();i++)
+        {
+            if(n1.charAt(i)!=n2.charAt(i))
+            {
+                ct++;
+            }
+        }
+        return ct;
+    }
+    public String bin(int a)
+    {
+        String ans="";
+        while(a!=0)
+        {
+            ans=(a%2)+ans;
+            a=a/2;
+        }
+        return ans;
+    }
+}
+
+Question 10:
+Reverse bits of a given 32 bits unsigned integer. 
+
+public class Solution {
+    public int reverseBits(int n) {
+        int rev = 0;
+        for (int i = 0; i < 32; i++) {
+            rev <<= 1;
+            rev |= (n & 1);
+            n >>= 1;
+        }
+        return rev;
+    }
+}
