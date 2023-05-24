@@ -1,0 +1,639 @@
+                GRAPHS ASSIGNMENT
+Problem 1:
+import java.util.*;
+class GFG
+{
+static class AdjListNode {
+	int v;
+	int weight;
+
+	AdjListNode(int _v, int _w)
+	{
+	v = _v;
+	weight = _w;
+	}
+	int getV() { return v; }
+	int getWeight() { return weight; }
+}
+static class Graph {
+	int V; // No. of vertices'
+
+	// Pointer to an array containing adjacency lists
+	ArrayList<ArrayList<AdjListNode>> adj;
+
+	Graph(int V) // Constructor
+	{
+	this.V = V;
+	adj = new ArrayList<ArrayList<AdjListNode>>(V);
+
+	for(int i = 0; i < V; i++){
+		adj.add(new ArrayList<AdjListNode>());
+	}
+	}
+
+	void addEdge(int u, int v, int weight)
+	{
+	AdjListNode node = new AdjListNode(v, weight);
+	adj.get(u).add(node); // Add v to u's list
+	}
+
+	
+	void topologicalSortUtil(int v, boolean visited[],
+							Stack<Integer> stack)
+	{
+	
+	visited[v] = true;
+
+	
+	for (int i = 0; i<adj.get(v).size(); i++) {
+		AdjListNode node = adj.get(v).get(i);
+		if (!visited[node.getV()])
+		topologicalSortUtil(node.getV(), visited, stack);
+	}
+	stack.push(v);
+	}
+
+	void longestPath(int s)
+	{
+	Stack<Integer> stack = new Stack<Integer>();
+	int dist[] = new int[V];
+
+	
+	boolean visited[] = new boolean[V];
+	for (int i = 0; i < V; i++)
+		visited[i] = false;
+	for (int i = 0; i < V; i++)
+		if (visited[i] == false)
+		topologicalSortUtil(i, visited, stack);
+
+	for (int i = 0; i < V; i++)
+		dist[i] = Integer.MIN_VALUE;
+
+	dist[s] = 0;
+	
+	while (stack.isEmpty() == false)
+	{
+		
+		
+		int u = stack.peek();
+		stack.pop();
+
+		
+		if (dist[u] != Integer.MIN_VALUE)
+		{
+		for (int i = 0; i<adj.get(u).size(); i++)
+		{
+			AdjListNode node = adj.get(u).get(i);
+			if (dist[node.getV()] < dist[u] + node.getWeight())
+			dist[node.getV()] = dist[u] + node.getWeight();
+		}
+		}
+	}
+
+	for (int i = 0; i < V; i++)
+		if(dist[i] == Integer.MIN_VALUE)
+		System.out.print("INF ");
+	else
+		System.out.print(dist[i] + " ");
+	}
+}
+
+
+Problem 2:
+
+import java.io.*;
+
+import java.util.*;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int n = Integer.parseInt(br.readLine());
+    int[] arr = new int[n];
+
+    String[] st = br.readLine().split(" ");
+    for (int i = 0; i < n; i++) {
+      arr[i] = Integer.parseInt(st[i]);
+    }
+
+    System.out.println(minSwaps(arr));
+  }
+
+  public static int minSwaps(int[] arr1) {
+    int n = arr1.length;
+    Pair[]arr = new Pair[n];
+    for (int i = 0; i < n; i++) {
+      arr[i] = new Pair(arr1[i], i);
+    }
+    Arrays.sort(arr);
+    int ans = 0;
+    boolean[]vis = new boolean[n];
+    for (int i = 0; i < n; i++) {
+      if (vis[i] == true || arr[i].idx == i) {
+        continue;
+      }
+      int clen = 0;
+      int j = i;
+      while (vis[j] == false) {
+        vis[j] = true;
+        clen++;
+        j = arr[j].idx;
+      }
+      ans += (clen - 1);
+    }
+    return ans;
+  }
+
+  private static class Pair implements Comparable< Pair> {
+    int val;
+    int idx;
+
+    Pair(int val, int idx) {
+      this.val = val;
+      this.idx = idx;
+    }
+
+    @Override
+    public int compareTo(Pair o) {
+      return this.val - o.val;
+    }
+  }
+}
+
+
+Problem 3:
+class Solution {
+    Node []visited;
+    public Node cloneGraph(Node node) {
+        if(node==null) return null;
+        visited = new Node[101];
+        return dfs(node);
+    }
+    public Node dfs(Node node){
+        if(visited[node.val] != null) return visited[node.val];
+        visited[node.val] = new Node(node.val);
+        for(Node n: node.neighbors) visited[node.val].neighbors.add(dfs(n));
+        return visited[node.val];
+    }
+}
+
+Problem 4:
+
+lass Solution {
+    public int numIslands(char[][] grid) {
+        int count=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]=='1'){
+                    count++;
+                    bfs(grid,i,j);
+                }
+            }
+        }
+        return count;
+        
+    }
+    
+    public void bfs(char[][]grid,int i,int j){
+        if(i<0 || i>=grid.length || j<0 || j>=grid[i].length || grid[i][j]=='0')
+            return;
+        
+        grid[i][j]='0';
+        bfs(grid,i+1,j);
+        bfs(grid,i-1,j);
+        bfs(grid,i,j+1);
+        bfs(grid,i,j-1);
+    }
+}
+
+Problem 5:
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        Map<Integer, Integer> map = new TreeMap<>();
+
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                map.put(matrix[i][j], map.getOrDefault(matrix[i][j], 0) + 1);
+            }
+        }
+
+        for(int n : map.keySet()) {
+            k -= map.get(n);
+
+            if(k <= 0) {
+                return n;
+            }
+        }
+
+        return -1;
+    }
+}
+
+Problem 6:
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m=obstacleGrid.length;
+        int n=obstacleGrid[0].length;
+        
+        int[][] dp=new int[m][n];
+        for(int i=0;i<n;i++){
+            if(obstacleGrid[0][i]==1)
+                break;
+            else{
+                dp[0][i]=1;
+            }
+        }
+           
+            for(int j=0;j<m;j++){
+                if(obstacleGrid[j][0]==1)
+                    break;
+                else{
+                    dp[j][0]=1;
+                }
+            }
+            for(int k=1;k<m;k++){
+                for(int l=1;l<n;l++){
+                    if(obstacleGrid[k][l]==1){
+                        dp[k][l]=0;
+                    }
+                    else{
+                        dp[k][l]=dp[k-1][l]+dp[k][l-1];
+                    }
+                }
+            }
+        return dp[m-1][n-1];
+    }
+}
+                
+       
+    
+Problem 7:
+class Solution {
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if(edges.length == 0 || n == 1){
+            List<Integer> res = Arrays.asList(0);
+            return res;
+        }
+        ArrayList<Integer>[] adj = new ArrayList[n];
+        int[] indegree = new int[n];
+        
+        for(int i=0; i<n; i++){
+            adj[i] = new ArrayList<>();
+        }
+        
+        for(int[] e: edges){
+            int v = e[0];
+            int u = e[1];
+            
+            adj[v].add(u);
+            adj[u].add(v);
+            indegree[u]++;
+            indegree[v]++;
+        }
+        
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        
+        for(int i=0; i<n; ++i){
+            if(indegree[i] == 1){
+                queue.add(i);
+            }
+        }
+        
+        while(n > 2){
+            int size = queue.size();
+            n -= size;
+            
+            while(size-- > 0){
+                //remove
+                int rem = queue.remove();
+                
+                //mark*
+                //work
+                for(int i: adj[rem]){
+                    indegree[i]--;
+                    if(indegree[i] == 1){
+                        queue.add(i);
+                    }
+                }
+                //add*
+            }
+        }
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        while(queue.size()>0){
+            res.add(queue.pop());
+        }
+        
+        
+        return res;
+    }
+}
+
+Problem 8:
+class Solution {
+    public int maxPathSum(TreeNode root) {
+        
+        int maxValue[] = new int[1]; // Create an array to hold the max value
+        maxValue[0] = Integer.MIN_VALUE; // Initialize the max value to the lowest possible integer value
+        maxPathDown(root,maxValue); // Call the recursive helper function to compute the max path sum
+
+        return maxValue[0]; // Return the max path sum
+    }
+
+    public int maxPathDown(TreeNode root, int maxValue[]){
+		if(root==null){
+
+            return 0;
+        }
+
+        
+        
+        int left = Math.max(0,maxPathDown(root.left,maxValue));
+        int right = Math.max(0,maxPathDown(root.right,maxValue));
+
+        
+        maxValue[0] = Math.max(maxValue[0], left + right + root.val);
+
+        
+        return Math.max(left,right) + root.val;
+    }
+}
+
+Problem 9:
+class Solution {
+    public void dfs(int idx, int n, int[][] graph, List<List<Integer>> ans, List<Integer> container) {
+        if (idx == n - 1) {
+            ans.add(new ArrayList<>(container));
+            return;
+        }
+        int[] arr = graph[idx];
+        for (int i = 0; i < arr.length; i++) {
+            container.add(arr[i]);
+            dfs(arr[i], n, graph, ans, container);
+            container.remove(container.size() - 1);
+        }
+    }
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        int n = graph.length;
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> container = new ArrayList<>();
+        container.add(0);
+        dfs(0, n, graph, ans, container);
+        return ans;
+    }
+}
+
+Problem 10:
+import java.util.*;
+class Graph {
+	private int V; // No. of vertices in graph.
+
+	private LinkedList<Integer>[] adj; // Adjacency List
+									// representation
+
+	ArrayList<ArrayList<Integer> > components
+		= new ArrayList<>();
+
+	@SuppressWarnings("unchecked") Graph(int v)
+	{
+		V = v;
+		adj = new LinkedList[v];
+
+		for (int i = 0; i < v; i++)
+			adj[i] = new LinkedList();
+	}
+
+	void addEdge(int u, int w)
+	{
+		adj[u].add(w);
+		adj[w].add(u); // Undirected Graph.
+	}
+
+	void DFSUtil(int v, boolean[] visited,
+				ArrayList<Integer> al)
+	{
+		visited[v] = true;
+		al.add(v);
+		System.out.print(v + " ");
+		Iterator<Integer> it = adj[v].iterator();
+
+		while (it.hasNext()) {
+			int n = it.next();
+			if (!visited[n])
+				DFSUtil(n, visited, al);
+		}
+	}
+
+	void DFS()
+	{
+		boolean[] visited = new boolean[V];
+
+		for (int i = 0; i < V; i++) {
+			ArrayList<Integer> al = new ArrayList<>();
+			if (!visited[i]) {
+				DFSUtil(i, visited, al);
+				components.add(al);
+			}
+		}
+	}
+
+	int ConnectedComponents() { return components.size(); }
+}
+
+
+Problem 11:
+class Solution {
+    int startRow;
+    int startCol;
+    public int longestIncreasingPath(int[][] matrix) {
+        int n=matrix.length;
+        int m=matrix[0].length;
+        
+        int delRow[]={1,-1,0,0};
+        int delCol[]={0,0,1,-1};
+        int visit[][]=new int[n][m];
+   
+        int max=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                
+                if(visit[i][j]==0){
+                    
+                    max=Math.max(max,dfs(i,j,matrix,visit,n,m,delRow,delCol));
+                    
+                }
+            }
+        }
+        return max;
+    }
+
+    public int dfs(int row,int col,int [][]matrix,int [][]visit,int n,int m,int[]delRow,int[]delCol){     
+        if(visit[row][col]>0){
+            return visit[row][col];
+        }
+        //System.out.println(row+","+col);
+        int ans=1;
+        for(int i=0;i<4;i++){
+            int nrow=row+delRow[i];
+            int ncol=col+delCol[i];
+
+            if (nrow < 0 || nrow >= n || ncol < 0 || ncol >= m) {
+                continue;
+            }
+
+            if (matrix[nrow][ncol] <= matrix[row][col]) {
+                continue;
+            }
+
+                ans=Math.max(ans,dfs(nrow,ncol,matrix,visit,n,m,delRow,delCol)+1);
+        }
+        visit[row][col]=ans;
+        return ans;
+    }
+}
+
+Problem 12:
+// Java program to find Minimum
+// number of jumps to reach end
+import java.io.*;
+import java.util.*;
+
+class GFG {
+	// Returns minimum number of
+	// jumps to reach arr[h] from arr[l]
+	static int minJumps(int arr[], int l, int h)
+	{
+		// Base case: when source
+		// and destination are same
+		if (h == l)
+			return 0;
+
+		// When nothing is reachable
+		// from the given source
+		if (arr[l] == 0)
+			return Integer.MAX_VALUE;
+
+		// Traverse through all the points
+		// reachable from arr[l]. Recursively
+		// get the minimum number of jumps
+		// needed to reach arr[h] from these
+		// reachable points.
+		int min = Integer.MAX_VALUE;
+		for (int i = l + 1; i <= h && i <= l + arr[l];
+			i++) {
+			int jumps = minJumps(arr, i, h);
+			if (jumps != Integer.MAX_VALUE
+				&& jumps + 1 < min)
+				min = jumps + 1;
+		}
+		return min;
+	}
+
+	
+Problem 13:
+    HashMap<String,PriorityQueue<String>> map = new HashMap<>();
+    
+    for(int i=0;i<tickets.size();i++){
+        String to = tickets.get(i).get(0);
+        String from = tickets.get(i).get(1);
+        
+        if(!map.containsKey(to)){
+            map.put(to,new PriorityQueue<>());
+        }
+        map.get(to).add(from);
+    }
+    
+    dfs(map,"JFK");
+    Collections.reverse(res);
+    return res;
+}
+private void dfs(HashMap<String,PriorityQueue<String>> map,String source){
+    
+    PriorityQueue<String> temp = map.get(source);
+    if(temp != null){
+        while(!temp.isEmpty()){
+            dfs(map,temp.poll());
+        }
+    }
+    res.add(source);
+}
+
+Problem 14:
+public class Pair &lt; T, U &gt; {
+  private final T key;
+  private final U value;
+
+  public Pair(T key, U value) {
+    this.key = key;
+    this.value = value;
+  }
+
+  public T getKey() {
+    return this.key;
+  }
+
+  public U getValue() {
+    return this.value;
+  }
+}
+public void dfs(ArrayList &lt; Integer &gt; vec[], boolean[] vis, int node, int[] compSize) {
+  vis[node] = true;
+  compSize[0] += 1;
+  for (int i = 0; i &lt; vec[node].size(); i++) {
+    if (!vis[(int) vec[node].get(i)]) {
+      dfs(vec, vis, vec[node].get(i), compSize);
+    }
+  }
+}
+public int minimumSwaps(int[] a, int n) {
+  ArrayList &lt; Pair &lt; Integer, Integer &gt;&gt; aux = new ArrayList &lt; Pair &lt; Integer, Integer &gt;&gt; ();
+  for (int i = 0; i &lt; n; i++) {
+ aux.add(new Pair &lt; Integer, Integer &gt; (a[i], i + 1));
+  }
+  aux.sort(new Comparator &lt; Pair &lt; Integer, Integer &gt;&gt; () {
+    public int compare(Pair &lt; Integer, Integer &gt; first, Pair &lt; Integer, Integer &gt; second) {
+      if (first.key &gt; second.key) {
+        return 1;
+      } else if (first.key &lt; second.key) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  });
+  boolean[] vis = new boolean[n + 1];
+  for (int i = 0; i &lt;= n; i++) {
+    vis[i] = false;
+  }
+  ArrayList &lt; Integer &gt; vec[] = new ArrayList[n + 1];
+  for (int i = 0; i &lt; n; i++) {
+    vec[i + 1] = new ArrayList &lt; &gt; ();
+  }
+  for (int i = 0; i &lt; n; i++) {
+    vec[aux.get(i).value].add(i + 1);
+  }
+  int ans = 0;
+  for (int i = 1; i &lt;= n; i++) {
+    int[] compSize = new int[1];
+    compSize[0] = 0;
+    if (!vis[i]) {
+      dfs(vec, vis, i, compSize);
+      ans += (compSize[0] - 1);
+    }
+  }
+  return ans;
+}
+
+Problem 15:
+	public int numDecodings(String s) {
+        return s.length()==0?0:numDecodings(0,s);      
+    }
+    private int numDecodings(int p, String s) {
+        int n=s.length();
+        if(p==n) return 1;
+        if(s.charAt(p)=='0') return 0;
+        int res=numDecodings(p+1,s);
+        if(p<n-1&&(s.charAt(p)=='1'||s.charAt(p)=='2'&&s.charAt(p+1)<'7')) 
+			res+=numDecodings(p+2,s);
+        return res;
+    }
