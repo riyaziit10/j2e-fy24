@@ -1,0 +1,409 @@
+1.
+public class Solution1 {
+        int data;
+        Node next;
+
+        Node(int value)
+        {
+            this.data = value;
+            this.next = null;
+        }
+        }
+
+        class Main {
+        static int length(Node head)
+        {
+            Node temp = head;
+            int count = 0;
+            while (temp != null) {
+            count++;
+            temp = temp.next;
+            }
+            return count;
+        }
+
+        static void printList(Node head)
+        {
+            Node ptr = head;
+            while (ptr != null) {
+            System.out.print(ptr.data + " ");
+            ptr = ptr.next;
+            }
+            System.out.println();
+        }
+
+        static Node deleteNthNodeFromEnd(Node head, int n)
+        {
+            int Length = length(head);
+            int nodeFromBeginning = Length - n + 1;
+            Node prev = null;
+            Node temp = head;
+            for (int i = 1; i < nodeFromBeginning; i++) {
+            prev = temp;
+            temp = temp.next;
+            }
+            if (prev == null) {
+            head = head.next;
+            return head;
+            }
+            else {
+            prev.next = prev.next.next;
+            return head;
+            }
+        }
+
+        public static void main(String[] args)
+        {
+            Node head = new Node(1);
+            head.next = new Node(2);
+            head.next.next = new Node(3);
+            head.next.next.next = new Node(4);
+            head.next.next.next.next = new Node(5);
+            System.out.println("Linked List before Deletion:");
+            printList(head);
+
+            head = deleteNthNodeFromEnd(head, 4);
+
+            System.out.println("Linked List after Deletion:");
+            printList(head);
+        }
+        }
+
+2.
+
+class Solution2 {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* ptr1 = list1;
+        ListNode* ptr2 = list2;
+        if(ptr1 == NULL){
+            return list2;
+        }
+        if(ptr2 == NULL){
+            return list1;
+        }
+        if(ptr1->val < ptr2->val){
+            ptr1->next = mergeTwoLists(ptr1->next, ptr2);
+            return ptr1;
+        }
+        else{
+            ptr2->next = mergeTwoLists(ptr1, ptr2->next);
+            return ptr2;
+        }
+    }
+};
+
+
+3.
+
+class Solution3 {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head==NULL || head->next==NULL)return head;
+        ListNode* temp=swapPairs(head->next->next);
+        ListNode* t=head;
+        head=head->next;
+        head->next=t;
+        head->next->next=temp;
+        return head;
+    }
+};
+
+4.
+class Solution4 {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode *ans = new ListNode(0);
+        ListNode *curr = ans;
+
+        while(head) {
+            while(head->next && head -> val == head -> next -> val) head = head -> next;
+            curr -> next = head;
+            curr = head;
+            head = head -> next;
+        }
+        return ans->next;
+    }
+};
+
+5.
+class Solution5 {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* temp = head;
+        ListNode* pre = NULL;
+        
+        
+        while(temp != NULL){
+
+            int k = 1;
+            ListNode* curr = temp; 
+            
+           
+            while((temp != NULL) && (temp->val == curr->val)){
+                temp = temp->next;
+                k++;
+            }
+            k--;
+
+            if(k == 1){
+
+  
+                if(pre == NULL){
+                    head = curr;
+                    pre = curr;
+                }
+
+             
+                else{
+                    pre->next = curr;
+                    pre = curr;
+                }
+            }
+
+            if(temp == NULL && pre != NULL){
+                pre->next = temp;
+            }
+        } 
+
+        if(pre == NULL){
+            head = NULL;
+        }
+        return head;
+    }
+};
+
+6.
+public class Solution6 {
+        int key;
+        int value;
+
+
+        int timeStamp;
+
+        public Node(int key, int value)
+        {
+            this.key = key;
+            this.value = value;
+
+
+            this.timeStamp = currentTimeStamp;
+        }
+    }
+
+7.
+import java.util.*;
+public class Solution7 {
+
+
+	static class Node {
+		int data;
+		Node prev, next;
+
+
+		static Node getnode(int data)
+		{
+			Node newNode = new Node();
+			newNode.data = data;
+			newNode.prev = newNode.next = null;
+			return newNode;
+		}
+	};
+
+
+	static class Deque {
+		Node front;
+		Node rear;
+		int Size;
+
+		Deque()
+		{
+			front = rear = null;
+			Size = 0;
+		}
+
+
+		boolean isEmpty() { return (front == null); }
+
+
+		int size() { return Size; }
+
+
+		void insertFront(int data)
+		{
+			Node newNode = Node.getnode(data);
+
+			if (newNode == null)
+				System.out.print("OverFlow\n");
+			else {
+
+				if (front == null)
+					rear = front = newNode;
+
+
+				else {
+					newNode.next = front;
+					front.prev = newNode;
+					front = newNode;
+				}
+
+
+				Size++;
+			}
+		}
+
+
+		void insertRear(int data)
+		{
+			Node newNode = Node.getnode(data);
+
+			if (newNode == null)
+				System.out.print("OverFlow\n");
+			else {
+
+				if (rear == null)
+					front = rear = newNode;
+
+
+				else {
+					newNode.prev = rear;
+					rear.next = newNode;
+					rear = newNode;
+				}
+
+				Size++;
+			}
+		}
+
+
+		void deleteFront()
+		{
+
+			if (isEmpty())
+				System.out.print("UnderFlow\n");
+
+
+			else {
+				Node temp = front;
+				front = front.next;
+
+
+				if (front == null)
+					rear = null;
+				else
+					front.prev = null;
+
+
+				Size--;
+			}
+		}
+
+
+		void deleteRear()
+		{
+
+			if (isEmpty())
+				System.out.print("UnderFlow\n");
+
+
+			else {
+				Node temp = rear;
+				rear = rear.prev;
+
+
+				if (rear == null)
+					front = null;
+				else
+					rear.next = null;
+
+
+				Size--;
+			}
+		}
+
+
+		int getFront()
+		{
+
+			if (isEmpty())
+				return -1;
+			return front.data;
+		}
+
+
+		int getRear()
+		{
+
+
+			if (isEmpty())
+				return -1;
+			return rear.data;
+		}
+
+
+		void erase()
+		{
+			rear = null;
+			while (front != null) {
+				Node temp = front;
+				front = front.next;
+			}
+			Size = 0;
+		}
+	}
+
+
+	public static void main(String[] args)
+	{
+		Deque dq = new Deque();
+		System.out.print(
+			"Insert element '5' at rear end\n");
+		dq.insertRear(5);
+
+		System.out.print(
+			"Insert element '10' at rear end\n");
+		dq.insertRear(10);
+		System.out.print("Rear end element: " + dq.getRear()
+						+ "\n");
+		dq.deleteRear();
+		System.out.print(
+			"After deleting rear element new rear"
+			+ " is: " + dq.getRear() + "\n");
+		System.out.print(
+			"Inserting element '15' at front end \n");
+		dq.insertFront(15);
+		System.out.print(
+			"Front end element: " + dq.getFront() + "\n");
+
+		System.out.print("Number of elements in Deque: "
+						+ dq.size() + "\n");
+		dq.deleteFront();
+		System.out.print("After deleting front element new "
+						+ "front is: " + dq.getFront()
+						+ "\n");
+	}
+
+
+
+}
+
+8.
+class Solution8 {
+public:
+    ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
+         ListNode* t1 = list1;
+        ListNode* t2 = list1;
+        for(int i = 0; i < a-1; i++) // setting t1 at its correct place, that is , at (a-1) nodes from starting
+        t1 = t1 -> next;
+        for(int i = 0; i < b; i++) // setting t2 at its correct place, that is , at b nodes from starting 
+        t2 = t2 -> next;
+        ListNode* temp = t2 -> next; // storing the track of rest of the list after b nodes
+        t1 -> next = list2; // merging list2 in list1.
+        ListNode* t3 = list2;
+        while(t3 -> next != NULL)
+        t3 = t3 -> next;
+
+        t3 -> next = temp; // t3->next is NULL, so merging the track of list1 after b nodes.
+        return list1;
+    }
+};
