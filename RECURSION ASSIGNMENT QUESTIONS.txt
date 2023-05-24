@@ -1,0 +1,289 @@
+                       RECURSION ASSIGNMENT QUESTIONS
+Problem 1:
+
+
+class Solution {
+	
+static void printAllKLength(char[] set, int k)
+{
+	int n = set.length;
+	printAllKLengthRec(set, "", n, k);
+}
+
+
+static void printAllKLengthRec(char[] set,
+							String prefix,
+							int n, int k)
+{
+	
+	
+	if (k == 0)
+	{
+		System.out.println(prefix);
+		return;
+	}
+
+	
+	for (int i = 0; i < n; ++i)
+	{
+
+		
+		String newPrefix = prefix + set[i];
+		
+		
+		printAllKLengthRec(set, newPrefix,
+								n, k - 1);
+	}
+}
+
+
+}
+
+
+Problem 2:
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int mat[][]=new int[m][n];
+        int cnt=0;
+        int dp[][]=new int[m][n];
+        int k=helper(mat,0,0,m,n,dp);
+        return k;
+    }
+    public int helper(int mat[][],int r,int c,int m,int n,int dp[][]){
+        if(c>=n||r>=m){
+            return 0;
+        }
+        if(dp[r][c]!=0){
+            return dp[r][c];
+        }
+        if(r==m-1&&c==n-1){
+            return 1;
+        }
+        int cnt1=helper(mat,r+1,c,m,n,dp);
+        int cnt2=helper(mat,r,c+1,m,n,dp);
+        return dp[r][c]=cnt1+cnt2;
+    }
+}
+Problem 3:
+public class ListNode {
+  int val;
+  ListNode next;
+  ListNode() {}
+  ListNode(int val) { this.val = val; }
+  ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ public void reorderList(ListNode head) {
+            if(head==null||head.next==null) return;
+            
+            //Find the middle of the list
+            ListNode p1=head;
+            ListNode p2=head;
+            while(p2.next!=null&&p2.next.next!=null){ 
+                p1=p1.next;
+                p2=p2.next.next;
+            }
+            
+            
+            ListNode preMiddle=p1;
+            ListNode preCurrent=p1.next;
+            while(preCurrent.next!=null){
+                ListNode current=preCurrent.next;
+                preCurrent.next=current.next;
+                current.next=preMiddle.next;
+                preMiddle.next=current;
+            }
+            
+            
+            p1=head;
+            p2=preMiddle.next;
+            while(p1!=preMiddle){
+                preMiddle.next=p2.next;
+                p2.next=p1.next;
+                p1.next=p2;
+                p1=p2.next;
+                p2=preMiddle.next;
+            }
+        }
+
+
+Problem 4:
+public static void main(String[] args) throws Exception {
+		
+		int diskNumber = 3;
+		Tower[] myTower = new Tower[3];
+		for (int i = 0; i < 3; i++) {
+			myTower[i] = new Tower(i);
+		}
+		for (int i = diskNumber - 1; i >= 0; i--) {
+			myTower[0].add(i);
+		}
+		myTower[0].moveDisks(diskNumber, myTower[1], myTower[2]);
+	}
+}
+
+class Tower {
+	int index;
+	Stack<Integer> disks;
+
+	public Tower(int i) {
+		
+		disks = new Stack<Integer>();
+		index = i;
+	}
+
+	public void moveDisks(int diskNumber, Tower buffer, Tower destination)
+			throws Exception {
+		
+		if (diskNumber > 0) {
+			moveDisks(diskNumber - 1, destination, buffer);
+			moveTo(destination);
+			buffer.moveDisks(diskNumber - 1, this, destination);
+		} else
+			return;
+	}
+
+	private void moveTo(Tower destination) throws Exception {
+		
+		int t = disks.pop();
+		destination.add(t);
+		System.out.println("Now moving " + t + "from " + this.index + " to "
+				+ destination.index);
+	}
+
+	public void add(int val) throws Exception {
+		
+		if ((!disks.isEmpty()) && disks.peek() < val) {
+			throw new Exception("Error placing disk " + val);
+		} else {
+			disks.push(val);
+		}
+	}
+
+}
+
+
+Problem 5:
+class Solution {
+    private  final Map<Integer, List<TreeNode>> memo = new HashMap<>();
+    private final int DEFAULT_VALUE = 0;
+    public List<TreeNode> allPossibleFBT(int n) {
+        return dp(n);
+    }
+
+    private List<TreeNode> dp(int n) {
+        if(n % 2 == 0) {
+            memo.put(n, Collections.emptyList());
+            return memo.get(n);
+        }
+        if(n == 1) {
+            memo.put(n, List.of(new TreeNode(DEFAULT_VALUE, null, null)));
+            return memo.get(n);
+        }
+        if(!memo.containsKey(n)) {
+            List<TreeNode> trees = new ArrayList<>();
+            for (int leftChildrenCount=0; leftChildrenCount < n-1; leftChildrenCount++) {
+                int rightChildrenCount = n - 1 - leftChildrenCount;
+                for (TreeNode leftChild: dp(leftChildrenCount)) {
+                    for (TreeNode rightChild: dp(rightChildrenCount)) {
+                        TreeNode newNode = new TreeNode(DEFAULT_VALUE, leftChild, rightChild);
+                        trees.add(newNode);
+                    }
+                }
+            }
+            memo.put(n, trees);
+            return memo.get(n);
+        }
+        return memo.get(n);
+    }
+}
+
+
+Problem 6:
+import java.util.*;
+class Solution {
+    static void subsetSumsHelper(int ind, int sum, ArrayList < Integer > arr, int N, ArrayList < Integer > sumSubset) {
+        if (ind == N) {
+            sumSubset.add(sum);
+            return;
+        }
+
+        
+        subsetSumsHelper(ind + 1, sum + arr.get(ind), arr, N, sumSubset);
+
+        // Do-not pick the element
+        subsetSumsHelper(ind + 1, sum, arr, N, sumSubset);
+    }
+
+    static ArrayList < Integer > subsetSums(ArrayList < Integer > arr, int N) {
+
+        ArrayList < Integer > sumSubset = new ArrayList < > ();
+        subsetSumsHelper(0, 0, arr, N, sumSubset);
+        Collections.sort(sumSubset);
+        return sumSubset;
+    }
+}
+
+
+Problem 7:
+
+of 0-1 Knapsack problem */
+class Knapsack {
+
+	
+	static int max(int a, int b) { return (a > b) ? a : b; }
+
+	
+	static int knapSack(int W, int wt[], int val[], int n)
+	{
+		
+		if (n == 0 || W == 0)
+			return 0;
+
+		
+		if (wt[n - 1] > W)
+			return knapSack(W, wt, val, n - 1);
+
+		
+		else
+			return max(val[n - 1]
+						+ knapSack(W - wt[n - 1], wt,
+									val, n - 1),
+					knapSack(W, wt, val, n - 1));
+	}
+
+	
+
+
+Problem 8:
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans = new ArrayList<>();
+        helper(s, 0, new ArrayList<>(), ans);
+        return ans;
+    }
+
+    private void helper(String s, int index, List<String> ds, List<List<String>> ans) {
+        if(s.isEmpty()) {
+            ans.add(new ArrayList<>(ds));
+            return;
+        }
+
+        for(int i = 0; i < s.length(); i++) {
+            String current = s.substring(0, i+1);
+            if(isPalindrome(current)) {
+                ds.add(current);
+                helper(s.substring(i+1), index + 1, ds, ans);
+                ds.remove(ds.size() - 1);
+            }
+        }
+    }
+
+    private boolean isPalindrome(String str) {
+        int start = 0;
+        int end = str.length() - 1;
+
+        while(start <= end) {
+            if(str.charAt(start++) != str.charAt(end--)) return false;
+        }
+        return true;
+    }
+}

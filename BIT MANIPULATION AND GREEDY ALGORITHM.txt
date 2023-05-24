@@ -1,0 +1,244 @@
+           BIT MANIPULATION AND GREEDY ALGORITHM
+
+Problem 1:
+import java.util.HashMap;
+import java.util.Map;
+
+public class FruitSlicingSteps {
+    public static int countSlicingSteps(int[] A) {
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        
+        
+        for (int fruitWeight : A) {
+            frequencyMap.put(fruitWeight, frequencyMap.getOrDefault(fruitWeight, 0) + 1);
+        }
+        
+        // Find the maximum frequency
+        int maxFrequency = 0;
+        for (int frequency : frequencyMap.values()) {
+            maxFrequency = Math.max(maxFrequency, frequency);
+        }
+        
+      
+        return maxFrequency;
+    }
+}
+    
+    
+
+Problem 2:
+import java.util.Arrays;
+
+public class CoinChange {
+    public static int coinChange(int[] coins, int amount) {
+        
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1); 
+        
+        
+        dp[0] = 0;
+        
+        
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                
+                if (coin <= i) {
+                    
+                    dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
+                }
+            }
+        }
+        
+        
+        if (dp[amount] > amount) {
+            return -1;
+        }
+        
+        return dp[amount];
+    }
+}
+
+Problem 3:
+public class EqualCandies {
+    public static int minTotalCandies(int[] a) {
+        int n = a.length;
+        
+        
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += a[i];
+        }
+        
+       
+        if (sum % n != 0) {
+            return -1; // It is not possible to distribute equally
+        }
+        
+       
+        int target = sum / n;
+        
+        
+        int totalEaten = 0;
+        for (int i = 0; i < n; i++) {
+            if (a[i] > target) {
+                totalEaten += a[i] - target;
+            }
+        }
+}
+
+
+Problem 4:
+public class PillSurvival {
+    public static int minPillsToSurvive(int N, int V, int[] a) {
+        int minPills = 0;
+        int health = V;
+        
+        for (int i = 0; i < N; i++) {
+            // If the health is already zero, return the minimum pills required so far
+            if (health <= 0) {
+                return minPills;
+            }
+            
+            // If the current pill can increase the health, take it
+            if (a[i] > 0) {
+                health += a[i];
+                minPills++;
+            }
+            
+            // Take 1 point of damage
+            health--;
+        }
+        
+        return minPills;
+    }
+}
+
+
+
+Problem 5:
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        helper(nums, 0, new ArrayList<>(), ans);
+        return ans;
+    }
+
+    private void helper(int[] nums, int index, List<Integer> ds, List<List<Integer>> ans) {
+        if(index >= nums.length) {
+            ans.add(new ArrayList<>(ds));
+            return;
+        }
+
+        ds.add(nums[index]);
+        helper(nums, index + 1, ds, ans);
+        ds.remove(ds.size() - 1);
+        helper(nums, index + 1, ds, ans);
+    }
+}
+
+
+
+Problem 6:
+class Solution {
+    public int singleNumber(int[] nums) {
+        Map<Integer,Integer> map= new HashMap();
+        for(int i:nums){
+            if(map.containsKey(i)){
+                map.put(i,map.get(i)+1);
+            }else{
+                map.put(i,1);
+            }
+        }
+        for(int j:map.keySet()){
+            if(map.get(j)==1){
+                return j;
+            }
+        }
+        return 0;
+        
+    }
+}
+
+Problem 7:
+import java.util.Arrays;
+
+public class MinXORValue {
+    public static int findMinXOR(int[] A) {
+        Arrays.sort(A); 
+        
+        int minXOR = Integer.MAX_VALUE;
+        
+        
+        for (int i = 0; i < A.length - 1; i++) {
+            minXOR = Math.min(minXOR, A[i] ^ A[i + 1]);
+        }
+        
+        return minXOR;
+    }
+}
+
+
+
+Problem 8:
+class Solution {
+    public int singleNumber(int[] nums) {
+        Map<Integer,Integer> map= new HashMap();
+        for(int i:nums){
+            if(map.containsKey(i)){
+                map.put(i,map.get(i)+1);
+            }else{
+                map.put(i,1);
+            }
+        }
+        for(int j:map.keySet()){
+            if(map.get(j)==1){
+                return j;
+            }
+        }
+        return 0;
+        
+    }
+}
+
+Problem 9:
+class Solution {
+    public int hammingDistance(int x, int y) {
+        int xor=x^y;          //perform a xor opertion on x and y
+        int bitCount=0;
+        for(int i=0;i<32;i++){  //iterating through 32 bit index
+            if((xor>>i &1)==1){   //performing right shift and then do 'and' with 1
+                bitCount++;       //if ans==1... increment the counter
+            }
+        }
+        return bitCount;        //return counter
+          
+    }
+}
+
+
+Problem 10:
+public class Solution {
+    
+    public int reverseBits(int n) {
+        if(n==0)
+            return 0;
+        int result=0;
+        for(int i=0;i<32;i++){
+            result<<=1;
+            result |=(n&1);
+            n>>=1;
+            
+            }
+        return result;
+        
+            
+        
+    }
+}
+
+
+
+
+
+
+
