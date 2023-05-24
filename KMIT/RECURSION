@@ -1,0 +1,218 @@
+Problem 1:
+
+Print all possible strings of length k that can be formed from a set of n characters.
+      
+
+static void printAllKLength(char[] set, int k)
+{
+    int n = set.length;
+    printAllKLengthRec(set, "", n, k);
+}
+ 
+static void printAllKLengthRec(char[] set,String sub, int n, int k)
+{
+    if (k == 0)
+    {
+        System.out.println(sub);
+        return;
+    }
+    for (int i = 0; i < n; ++i)
+    {
+        String newSub = sub + set[i];
+        printAllKLengthRec(set, newSub, n, k - 1);
+    }
+}
+
+
+Problem  2:
+
+Find the number of unique paths in a n X m grid, starting from [0,0] to [n-1,m-1], where movement is only allowed either 1 cell down or 1 cell right at a time. 
+
+class Solution {
+    public int uniquePaths(int m, int n) {
+    int[][] memo = new int[n][m];
+    return uniquePathsHelper(n-1, m-1, memo);
+}
+
+public static int uniquePathsHelper(int n, int m, int[][] memo) {
+    if (n == 0 && m == 0) {
+        return 1;
+    }
+    if (memo[n][m] != 0) {
+        return memo[n][m];
+    }
+    int Right = 0, Down = 0;
+    if (n > 0) {
+        Down = uniquePathsHelper(n-1, m, memo);
+    }
+    if (m > 0) {
+        Right = uniquePathsHelper(n, m-1, memo);
+    }
+    memo[n][m] = numPathsRight + numPathsDown;
+    
+    return memo[n][m];
+}  
+}
+
+Problem 3:
+
+The head of a singly linked-list is given. The list can be represented as: L0 → L1 → … → Ln - 1 → Ln Reorder the list to be on the following form: L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → … The values in the list's nodes may not be modified, only nodes themselves may be changed. 
+          class Solution {
+    public void reorderList(ListNode head) {
+    if (head == null || head.next == null) {
+        return;
+    }
+
+    ListNode tail = head;
+    while (tail.next != null && tail.next.next != null) {
+        tail = tail.next;
+    }
+    ListNode last = tail.next;
+    tail.next = null;
+
+    ListNode nextHead = head.next;
+    head.next = last;
+    last.next = nextHead;
+
+    reorderList(nextHead);
+}
+    }
+
+
+Problem 4:
+
+Towers of Hanoi: In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can slide onto any tower. The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e., each disk sits on top of an even larger one). You have the following constraints: (1) Only one disk can be moved at a time. (2) A disk is slid off the top of one tower onto another tower. (3) A disk cannot be placed on top of a smaller disk. Write a program to move the disks from the first tower to the last and print the moves.
+void moveTowers(int n, Tower destination, Tower buffer) {
+       if(n>0) {
+	      moveTowers(n-1, buffer, destination);
+		  moveTopElement(destination);
+		  moveTowers(n-1, destination, origin)
+	   }
+}
+ void moveTopTo(Tower t) { 
+         int top= disks.pop(); 
+         t.add(top);
+ }
+
+
+
+Problem 5:
+  Given an integer n, return a list of all possible full binary trees with n nodes. Each node of each tree in the answer must have Node.val == 0. Each element of the answer is the root node of one possible tree. You may return the final list of trees in any order. A full binary tree is a binary tree where each node has exactly 0 or 2 children.
+class Solution {
+    public List<TreeNode> allPossibleFBT(int n) {
+        if (n % 2 == 0) {
+        return new ArrayList<TreeNode>();
+    }
+    if (n == 1) {
+        List<TreeNode> result = new ArrayList<>();
+        result.add(new TreeNode(0));
+        return result;
+    }
+    List<TreeNode> result = new ArrayList<>();
+    for (int i = 1; i < n; i += 2) {
+        List<TreeNode> leftSubtrees = allPossibleFBT(i);
+        List<TreeNode> rightSubtrees = allPossibleFBT(n - i - 1);
+        for (TreeNode left : leftSubtrees) {
+            for (TreeNode right : rightSubtrees) {
+                TreeNode root = new TreeNode(0);
+                root.left = left;
+                root.right = right;
+                result.add(root);
+            }
+        }
+    }
+    return result;
+}
+}
+
+
+Problem 6:
+
+
+Print sums of all subsets of a given set of size n.
+ static void subsetSums(int[] arr, int l, int r, int sum)
+    {
+ 
+               if (l > r) {
+            System.out.print(sum + " ");
+            return;
+        }
+ 
+              subsetSums(arr, l + 1, r, sum + arr[l]);
+ 
+               subsetSums(arr, l + 1, r, sum);
+    }
+
+
+
+
+
+
+Problem 7:
+
+
+ 0/1 Knapsack Problem: We are given N items where each item has some weight and profit associated with it. We are also given a bag with capacity W, [i.e., the bag can hold at most W weight in it]. The target is to put the items into the bag such that the sum of profits associated with them is the maximum possible. The constraint here is we can either put an item completely into the bag or cannot put it at all [It is not possible to put a part of an item into the bag]. 
+
+
+class Knapsack {
+ 
+        static int max(int a, int b) { return (a > b) ? a : b; }
+     static int knapSack(int W, int wt[], int val[], int n)
+    {
+        if (n == 0 || W == 0)
+            return 0;
+        if (wt[n - 1] > W)
+            return knapSack(W, wt, val, n - 1);
+        else
+            return max(val[n - 1]
+                           + knapSack(W - wt[n - 1], wt,
+                                      val, n - 1),
+                       knapSack(W, wt, val, n - 1));
+    }
+
+
+Problem 8:
+
+
+ Given a string s, partition s such that every string of the partition is a palindrome. Return all possible palindrome partitioning of s.
+class Solution {
+    public List<List<String>> partition(String s) {
+         List<List<String>> result = new ArrayList<>();
+        partitionHelper(s, 0, new ArrayList<>(), result);
+        return result;
+    }
+   
+    private static void partitionHelper(String s, int start, List<String> current, List<List<String>> result) {
+        if (start == s.length()) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+        for (int i = start; i < s.length(); i++) {
+            if (isPalindrome(s, start, i)) {
+                current.add(s.substring(start, i + 1));
+                partitionHelper(s, i + 1, current, result);
+                current.remove(current.size() - 1);
+            }
+        }
+    }
+   
+    private static boolean isPalindrome(String s, int start, int end) {
+        while (start < end) {
+            if (s.charAt(start) != s.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
+
+
+
