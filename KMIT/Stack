@@ -1,0 +1,307 @@
+1..IMPLEMENT A STACK USING TWO QUEUES Q1 AND Q2
+class MyStack {
+Queue<Integer>q1;
+Queue<Integer>q2;
+public MyStack() {
+q1=new ArrayDeque<>();
+q2=new ArrayDeque<>();
+}
+public void push(int x) {
+while(!q1.isEmpty()){
+q2.offer(q1.poll());
+}
+q1.offer(x);
+while(!q2.isEmpty()){
+q1.offer(q2.poll());
+}
+}
+public int pop() {
+return q1.poll();
+}
+public int top() {
+return q1.peek();
+}
+public boolean empty() {
+if(q1.isEmpty()){
+return true;
+}
+return false;
+}
+}
+*********************************************************************************************.
+2.IMPLEMENT A QUEUE USING 2 STACKS S1 AND S2 .
+class MyQueue {
+public Stack<Integer> stk1 = new Stack<>();
+public Stack<Integer> stk2 = new Stack<>();
+public MyQueue() {
+}
+public void push(int x) {
+while(!stk1.isEmpty())
+{
+stk2.push(stk1.pop());
+}
+stk1.push(x);
+while(!stk2.isEmpty())
+{
+stk1.push(stk2.pop());
+}
+}
+public int pop() {
+if(!stk1.isEmpty())
+{
+return stk1.pop();
+}
+return -1;
+}
+public int peek() {
+if(!stk1.isEmpty())
+{
+return stk1.peek();
+}
+return -1;
+}
+public boolean empty() {
+return stk1.isEmpty();
+}
+}
+**************************************************************************************
+3. GIVEN AN ARRAY ARR[] OF SIZE N AND AN INTEGER K. FIND THE MAXIMUM FOR
+EACH AND EVERY CONTIGUOUS SUBARRAY OF SIZE K.
+class Solution {
+public int[] maxSlidingWindow(int[] nums, int k) {
+Stack<Integer> stack = new Stack<>();
+int[] arr = new int[nums.length-k+1];
+int p = 0;
+for (int i = 0; i < nums.length; i++) {
+while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+stack.pop();
+}
+stack.push(i);
+if (i >= k-1) {
+arr[p++] = nums[stack.firstElement()];
+if (stack.firstElement() == i-k+1) {
+stack.remove(0);
+}
+}
+}
+return arr;
+}
+}
+*******************************************************************************
+4. DESIGN A DATA STRUCTURE THAT WORKS LIKE A LRU CACHE. HERE CAP DENOTES
+THE CAPACITY OF THE CACHE AND Q DENOTES THE NUMBER OF QUERIES. QUERY
+CAN BE OF TWO TYPES:
+class LRUCache {
+Node head = new Node(0,0);
+Node tail = new Node(0,0);
+HashMap<Integer,Node> map = new HashMap<>();
+int capacity;
+public LRUCache(int _capacity) {
+capacity = _capacity;
+head.next = tail;
+tail.prev = head;
+}
+public int get(int key) {
+if(map.containsKey(key)){
+Node node = map.get(key);
+remove(node);
+insert(node);
+return node.value;
+}
+else return -1;
+}
+public void put(int key, int value) {
+if(map.containsKey(key)){
+remove(map.get(key));
+}
+if(map.size() == capacity){
+remove(tail.prev);
+}
+insert(new Node(key,value));
+}
+private void remove(Node node){
+map.remove(node.key);
+node.prev.next = node.next;
+node.next.prev = node.prev;
+}
+private void insert(Node node){
+map.put(node.key,node);
+Node headNext = head.next;
+head.next = node;
+node.prev = head;
+node.next = headNext;
+headNext.prev = node;
+}
+class Node{
+Node prev,next;
+int key,value;
+Node(int _key,int _val){
+key = _key;
+value = _val;
+}
+}
+}
+*************************************************************************************
+5. GIVEN A SORTED DECK OF CARDS NUMBERED 1 TO N.
+1) We pick up 1 card and put it on the back of the deck.
+2) Now, we pick up another card, it turns out to be card number 1, we put it outside the deck.
+3) Now we pick up 2 cards and put them on the back of the deck.
+4) Now, we pick up another card and it turns out to be card numbered 2, we put it outside the
+deck. ... We perform this step until the last card. If such an arrangement of decks is possible,
+output the arrangement, if it is not possible for a particular value of N then output -1.
+class Solution{
+ArrayList<Integer> rotation(int n) {
+Deque<Integer> dq = new ArrayDeque<>();
+for (int i = n; i >= 1; i--) {
+dq.offerFirst(i);
+for (int j = 0; j < i; j++) {
+dq.offerFirst(dq.pollLast());
+}
+}
+ArrayList<Integer> list = new ArrayList<>();
+while (dq.peekFirst() != null) {
+list.add(dq.pollFirst());
+}
+return list;
+}
+}
+**********************************************************************
+6.GIVEN A STRING CONTAINING ONLY PARENTHESES, DETERMINE IF THE STRING IS
+VALID. AN INPUT STRING IS VALID IF: ● ● Open brackets must be closed by the same type of
+brackets. Open brackets must be closed in the correct order.
+class Solution {
+public boolean isValid(String s) {
+Stack<Character> st = new Stack<>();
+for (int i = 0; i < s.length(); i++) {
+if (s.charAt(i) == '(' || s.charAt(i) == '[' || s.charAt(i) == '{')
+{
+st.push(s.charAt(i));
+} else if (s.charAt(i) == ')') {
+if (st.isEmpty() || st.peek() != '(') {
+return false;
+}
+st.pop();
+} else if (s.charAt(i) == ']') {
+if (st.isEmpty() || st.peek() != '[') {
+return false;
+}
+st.pop();
+} else if (s.charAt(i) == '}') {
+if (st.isEmpty() || st.peek() != '{') {
+return false;
+}
+st.pop();
+}
+}
+return st.isEmpty();
+}
+}
+*************************************************************************
+7. GIVEN AN ARRAY, FIND THE NEXT GREATER ELEMENT (NGE) FOR EVERY ELEMENT
+IN THE ARRAY. THE NEXT GREATER ELEMENT FOR AN ELEMENT X IS THE FIRST
+GREATER ELEMENT ON THE RIGHT SIDE OF X IN THE ARRAY. IF THERE IS NO
+GREATER ELEMENT ON THE RIGHT SIDE, THEN THE OUTPUT FOR THAT ELEMENT
+SHOULD BE -1.
+class Solution {
+public int[] nextGreaterElements(int[] nums) {
+Stack<Integer>st=new Stack<>();
+int res[]=new int[nums.length];
+for(int i=2*nums.length-1;i>=0;i--)
+{
+while(!st.empty() && nums[st.peek()]<=nums[i%nums.length])
+{
+st.pop();
+}
+res[i%nums.length]=st.empty()?-1:nums[st.peek()];
+st.push(i%nums.length);
+}
+return res;
+}
+}
+*************************************************************************
+8. GIVEN A STRING S CONSISTING OF LOWERCASE LETTERS, REMOVE ADJACENT
+DUPLICATES FROM S. THE FINAL OUTPUT SHOULD BE IN LEXICOGRAPHICALLY
+SMALLEST ORDER.
+class Solution {
+public String removeDuplicates(String s) {
+Stack<Character>st=new Stack<>();
+String str="";
+for(int i=0;i<s.length();i++)
+{
+if(!st.empty() && s.charAt(i)==st.peek())
+st.pop();
+else
+st.push(s.charAt(i));
+}
+for(Character e:st)
+{
+str=str+e;
+}
+return str;
+}
+}
+*********************************************************************
+9. WRITE A CLASS STOCKSPANNER WHICH COLLECTS DAILY PRICE QUOTES FOR
+SOME STOCK, AND RETURNS THE SPAN OF THAT STOCK'S PRICE FOR THE CURRENT
+DAY. THE SPAN OF THE STOCK'S PRICE TODAY IS DEFINED AS THE MAXIMUM NUMBER
+OF CONSECUTIVE DAYS (STARTING FROM TODAY AND GOING BACKWARDS) FOR
+WHICH THE PRICE OF THE STOCK WAS LESS THAN OR EQUAL TO TODAY'S PRICE.
+import java.util.*;
+class StocksSpanner {
+private Stack<Integer> prices;
+private Stack<Integer> spans;
+public StocksSpanner() {
+prices = new Stack<>();
+spans = new Stack<>();
+}
+public int next(int price) {
+int span = 1;
+while (!prices.isEmpty() && prices.peek() <= price) {
+prices.pop();
+span += spans.pop();
+}
+prices.push(price);
+spans.push(span);
+return span;
+}
+}
+***************************************************************************
+10. EVALUATE THE VALUE OF AN ARITHMETIC EXPRESSION IN REVERSE POLISH
+NOTATION (RPN). VALID OPERATORS ARE +, -, *, AND /. EACH OPERAND MAY BE AN
+INTEGER OR ANOTHER EXPRESSION.
+class Solution {
+public int evalRPN(String[] tokens) {
+Stack<Integer>st=new Stack<>();
+for( String e:tokens)
+{
+if(e.equals("+") || e.equals("-") || e.equals("*") ||
+e.equals("/"))
+{
+int op2=st.pop();
+int op1=st.pop();
+int res=result(e,op1,op2);
+st.push(res);
+}
+else
+{
+st.push(Integer.parseInt (e));
+}
+}
+return st.pop();
+}
+public int result(String e,int op1,int op2)
+{
+switch(e)
+{
+case "+":
+return op1+op2;
+case "-":
+return op1-op2;
+case "*":
+return op1*op2;
+case "/":
+return op1/op2;
+}
+return -1;
+}
+}
