@@ -1,0 +1,472 @@
+PROBLEM 1. IMPLEMENT A STACK USING TWO QUEUES Q1 AND Q2.
+
+JAVA CODE:
+
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.*;
+
+class stacktwoqueue {
+    private Queue<Integer> q1 = new LinkedList<>();
+    private Queue<Integer> q2 = new LinkedList<>();
+
+    public void push(int x) {
+        q1.add(x);
+    }
+
+    public int pop() {
+        if (q1.isEmpty()) {
+            return -1;
+        }
+
+        while (q1.size() > 1) {
+            q2.add(q1.remove());
+        }
+
+        int poppedElement = q1.remove();
+
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+
+        return poppedElement;
+    }
+    public static void main(String args[])
+    {
+
+                Scanner scanner = new Scanner(System.in);
+                Stack stack = new Stack();
+
+                int numQueries = scanner.nextInt();
+
+                for (int i = 0; i < numQueries; i++) {
+                    String queryType = scanner.next();
+
+                    if (queryType.equals("push")) {
+                        int x = scanner.nextInt();
+                        stack.push(x);
+                    } else if (queryType.equals("pop")) {
+                        System.out.println(stack.pop());
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+PROBLEM 2. IMPLEMENT A QUEUE USING 2 STACKS S1 AND S2 
+
+JAVA CODE:
+
+import java.util.*;
+
+public class Queuetwostack{
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+
+
+    public void push(int x) {
+        stack1.push(x);
+    }
+
+
+    int pop() {
+        if (stack1.isEmpty() && stack2.isEmpty()) {
+            return -1;
+        }
+
+
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+
+
+        return stack2.pop();
+    }
+    public static void main(String[] args) {
+        Queuetwostack queue = new Queuetwostack();
+        Scanner scanner = new Scanner(System.in);
+
+        int numQueries = scanner.nextInt();
+
+        for (int i = 0; i < numQueries; i++) {
+            int queryType = scanner.nextInt();
+
+            if (queryType == 1) {
+                int x = scanner.nextInt();
+                queue.push(x);
+            } else if (queryType == 2) {
+                System.out.println(queue.pop());
+            }
+        }
+    }
+
+}
+
+
+PROBLEM 3. GIVEN AN ARRAY ARR[] OF SIZE N AND AN INTEGER K. FIND THE MAXIMUM FOR EACH AND EVERY
+CONTIGUOUS SUBARRAY OF SIZE K.
+
+CODE:
+
+class Solution
+{
+
+  static ArrayList <Integer> max_of_subarrays(int arr[], int n, int k)
+    {
+
+        int left=0;
+        ArrayList<Integer>al=new ArrayList<>();
+       for(int i=k-1; i<arr.length;i++)
+       {
+           int ans=returnMax(arr,left,i);
+           al.add(ans);
+           left++;
+       }
+       return al;
+    }
+  static int returnMax(int []arr,int startindex,int k)
+  { int max=Integer.MIN_VALUE;
+      for(int i=startindex;i<=k;i++)
+      {
+          if(arr[i]>max)
+              max=arr[i];
+      }
+
+      return max;
+  }
+}
+
+PROBLEM 4. DESIGN A DATA STRUCTURE THAT WORKS LIKE A LRU CACHE. HERE CAP DENOTES THE CAPACITY OF
+THE CACHE AND Q DENOTES THE NUMBER OF QUERIES. QUERY CAN BE OF TWO TYPES
+
+CODE:
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+class LRUCache {
+    private int capacity;
+    private Map<Integer, Node> cache;
+    private Node head;
+    private Node tail;
+
+    class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+
+        Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.cache = new HashMap<>();
+        this.head = new Node(-1, -1);
+        this.tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    private void addToFront(Node node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    private void removeNode(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    public int get(int key) {
+        if (cache.containsKey(key)) {
+            Node node = cache.get(key);
+            removeNode(node);
+            addToFront(node);
+            return node.value;
+        }
+        return -1;
+    }
+
+    public void set(int key, int value) {
+        if (cache.containsKey(key)) {
+            Node node = cache.get(key);
+            node.value = value;
+            removeNode(node);
+            addToFront(node);
+        } else {
+            Node newNode = new Node(key, value);
+            if (cache.size() >= capacity) {
+                Node lastNode = tail.prev;
+                removeNode(lastNode);
+                cache.remove(lastNode.key);
+            }
+            addToFront(newNode);
+            cache.put(key, newNode);
+        }
+    }
+}
+
+
+public class problem4 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int cap = scanner.nextInt();
+        int Q = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character after reading Q
+
+        LRUCache cache = new LRUCache(cap);
+
+        for (int i = 0; i < Q; i++) {
+            String query = scanner.nextLine();
+            String[] queryArr = query.split(" ");
+
+            if (queryArr[0].equals("SET")) {
+                int key = Integer.parseInt(queryArr[1]);
+                int value = Integer.parseInt(queryArr[2]);
+                cache.set(key, value);
+            } else if (queryArr[0].equals("GET")) {
+                int key = Integer.parseInt(queryArr[1]);
+                int result = cache.get(key);
+                System.out.println(result);
+            }
+        }
+
+        scanner.close();
+    }
+}
+
+
+PROBLEM 5. GIVEN A SORTED DECK OF CARDS NUMBERED 1 TO N.
+
+CODE:
+
+class Solution
+{
+    ArrayList<Integer> rotation(int N)
+    {
+
+        ArrayList<Integer> res = new ArrayList<Integer>();
+       int[] arr = new int[1001];
+       Queue<Integer> q = new LinkedList<>();
+       for(int i=1; i<=N; i++){
+           q.add(i);
+       }
+       int i=1;
+       while(!q.isEmpty()){
+           int j=0;
+           while(j<i){
+               int x = q.peek();
+               q.poll();
+               q.add(x);
+               j++;
+           }
+           int x = q.peek();
+           if(arr[x] != 0){
+               res.add(-1);
+               return res;
+           }
+           arr[x] = i;
+           q.poll();
+           i++;
+       }
+       for(i=1; i<=N; i++)
+           res.add(arr[i]);
+       return res;
+   }
+}
+
+
+PROBLEM 6. GIVEN A STRING CONTAINING ONLY PARENTHESES, DETERMINE IF THE STRING IS VALID. AN INPUT
+STRING IS VALID IF
+
+CODE:
+
+class Parentheses{
+    public boolean isValid(String s) {
+
+        HashMap<Character, Character> Hmap = new HashMap<Character, Character>();
+        Hmap.put(')','(');
+        Hmap.put('}','{');
+        Hmap.put(']','[');
+
+        Stack<Character> stack = new Stack<Character>();
+
+        for (int idx = 0; idx < s.length(); idx++){
+
+            if (s.charAt(idx) == '(' || s.charAt(idx) == '{' || s.charAt(idx) == '[') {
+                stack.push(s.charAt(idx));
+                continue;
+            }
+
+            if (stack.size() == 0 || Hmap.get(s.charAt(idx)) != stack.pop()) {
+                return false;
+            }
+        }
+
+        if (stack.size() == 0) {
+            return true;
+        }
+        return false;
+    }
+}
+
+PROBLEM 7. GIVEN AN ARRAY, FIND THE NEXT GREATER ELEMENT (NGE) FOR EVERY ELEMENT IN THE ARRAY. THE
+NEXT GREATER ELEMENT FOR AN ELEMENT X IS THE FIRST GREATER ELEMENT ON THE RIGHT SIDE OF X IN THE
+ARRAY. IF THERE IS NO GREATER ELEMENT ON THE RIGHT SIDE, THEN THE OUTPUT FOR THAT ELEMENT SHOULD
+BE -1.
+
+CODE:
+
+class Sol
+{
+
+    public static long[] nextLargerElement(long[] arr, int n)
+    { 
+
+        long[] r=new long[n];
+        r[n-1]=-1;
+        Stack<Long>s=new Stack<>();
+        s.push(arr[n-1]);
+        for(int i=n-2;i>=0;i--){
+            long v=arr[i];
+
+        while(s.isEmpty()==false &&v>=s.peek())
+        {
+
+                s.pop();
+
+        }
+        if(s.isEmpty()==true){
+            r[i]=-1;
+        }
+        else{
+            r[i]=s.peek();
+        }
+        s.push(v);
+        }
+        return r;
+    }
+}
+
+PROBLEM 8. GIVEN A STRING S CONSISTING OF LOWERCASE LETTERS, REMOVE ADJACENT DUPLICATES FROM S.
+THE FINAL OUTPUT SHOULD BE IN LEXICOGRAPHICALLY SMALLEST ORDER.
+
+CODE:
+
+class Sol{
+    public String removeDuplicates(String s) {
+        StringBuilder se=new StringBuilder();
+        for(int i=0;i<s.length();i++)
+        {
+            if(se.length()>0 &&se.charAt(se.length()-1)== s.charAt(i))
+            {
+                se.deleteCharAt(se.length()-1);
+            }
+            else{
+                se.append(s.charAt(i));
+            }
+        }
+        return se.toString();
+
+    }
+}
+
+
+PROBLEM 9. WRITE A CLASS STOCKSPANNER WHICH COLLECTS DAILY PRICE QUOTES FOR SOME STOCK, AND
+RETURNS THE SPAN OF THAT STOCK'S PRICE FOR THE CURRENT DAY. THE SPAN OF THE STOCK'S PRICE TODAY IS
+DEFINED AS THE MAXIMUM NUMBER OF CONSECUTIVE DAYS (STARTING FROM TODAY AND GOING BACKWARDS)
+FOR WHICH THE PRICE OF THE STOCK WAS LESS THAN OR EQUAL TO TODAY'S PRICE.
+
+CODE:
+
+class StockSpanner {
+    List<Integer> list; int i;
+
+    public StockSpanner() {
+        list = new ArrayList<Integer>();
+        i = 0;
+    }
+
+    public int next(int price) {
+        list.add(i, price); 
+        int j=i; int count = 0;
+        while(list.get(j) <= price){
+            if(j==0) {
+                count++;
+                break;
+            }
+            else{
+                count++; 
+                j--;
+            }
+        }
+        i++;
+        return count;
+    }
+}
+
+PROBLEM 10. EVALUATE THE VALUE OF AN ARITHMETIC EXPRESSION IN REVERSE POLISH NOTATION (RPN). VALID
+OPERATORS ARE +, -, *, AND /. EACH OPERAND MAY BE AN INTEGER OR ANOTHER EXPRESSION.
+
+CODE:
+
+public class Expression {
+	public static int eval(String[] tokens)
+	{
+
+		int i = 0;
+
+		int lastNum = -1;
+		while (i < tokens.length) {
+
+			if ("/*+-".contains(tokens[i])) {
+
+				int val1= Integer.valueOf(tokens[lastNum - 1]);
+
+				int val2 = Integer.valueOf(tokens[lastNum]);
+
+				int ans = 0;
+
+				if (tokens[i].equals("*"))
+					ans = val1 * val2;
+				else if (tokens[i].equals("/"))
+					ans = val1 / val2;
+				else if (tokens[i].equals("+"))
+					ans = val1 + val2;
+				else if (tokens[i].equals("-"))
+					ans = val1 - val2;
+
+				tokens[lastNum - 1] = Integer.toString(ans);
+
+				lastNum--;
+			}
+
+			else {
+
+				lastNum++;
+
+				tokens[lastNum] = tokens[i];
+			}
+			i++; 
+		}
+		return Integer.valueOf(
+			tokens[lastNum]); 
+	}
+
+
+}
+
+
