@@ -1,0 +1,102 @@
+Problem 7:
+
+Design your implementation of the circular double-ended queue (deque).
+Implement the MyCircularDeque class:
+
+1.MyCircularDeque(int k) Initializes the deque with a maximum size of k.
+2.boolean insertFront() Adds an item at the front of Deque. Returns true if the operation is successful, or false
+otherwise.
+3.boolean insertLast() Adds an item at the rear of Deque. Returns true if the operation is successful, or false
+otherwise.
+4.boolean deleteFront() Deletes an item from the front of Deque. Returns true if the operation is successful, or
+falseotherwise.
+5.boolean deleteLast() Deletes an item from the rear of Deque. Returns true if the operation is successful, or
+falseotherwise.
+6.int getFront() Returns the front item from the Deque. Returns -1 if the deque is empty.
+7.int getRear() Returns the last item from Deque. Returns -1 if the deque is empty.
+8.boolean isEmpty() Returns true if the deque is empty, or false otherwise.
+9.boolean isFull() Returns true if the deque is full, or false otherwise.
+
+Problem:
+
+
+class MyCircularDeque {
+    private int[] q;
+    private int front;
+    private int size;
+    private int capacity;
+
+
+    public MyCircularDeque(int k) {
+        q = new int[k];
+        capacity = k;
+    }
+
+
+    public boolean insertFront(int value) {
+        if (isFull()) {
+            return false;
+        }
+        if (!isEmpty()) {
+            front = (front - 1 + capacity) % capacity;
+        }
+        q[front] = value;
+        ++size;
+        return true;
+    }
+
+
+    public boolean insertLast(int value) {
+        if (isFull()) {
+            return false;
+        }
+        int idx = (front + size) % capacity;
+        q[idx] = value;
+        ++size;
+        return true;
+    }
+
+    public boolean deleteFront() {
+        if (isEmpty()) {
+            return false;
+        }
+        front = (front + 1) % capacity;
+        --size;
+        return true;
+    }
+
+
+    public boolean deleteLast() {
+        if (isEmpty()) {
+            return false;
+        }
+        --size;
+        return true;
+    }
+
+
+    public int getFront() {
+        if (isEmpty()) {
+            return -1;
+        }
+        return q[front];
+    }
+
+
+    public int getRear() {
+        if (isEmpty()) {
+            return -1;
+        }
+        int idx = (front + size - 1) % capacity;
+        return q[idx];
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+
+    public boolean isFull() {
+        return size == capacity;
+    }
+}

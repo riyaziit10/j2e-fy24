@@ -1,0 +1,47 @@
+PROBLEM-15
+
+Implement a function to find the number of ways to decode a message encoded as a string of digits, where each
+digit can be mapped to a character in the alphabet (1 → 'A', 2 → 'B', ..., 26 → 'Z').
+
+Example:
+Input:
+s = "226"
+Output:
+3
+
+program:
+
+public class DecodeWays {
+    public static int numDecodings(String s) {
+
+        if (s.length() == 0 || s.charAt(0) == '0') {
+            return 0;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+
+
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+
+        for (int i = 1; i <= n; i++) {
+            int currentDigit = Character.getNumericValue(s.charAt(i - 1));
+            int previousDigit = Character.getNumericValue(s.charAt(i - 2));
+
+
+            if (currentDigit >= 1 && currentDigit <= 9) {
+                dp[i] += dp[i - 1];
+            }
+
+
+            int twoDigitNumber = previousDigit * 10 + currentDigit;
+            if (twoDigitNumber >= 10 && twoDigitNumber <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+
+        return dp[n];
+    }
+}

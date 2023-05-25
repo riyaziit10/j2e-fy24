@@ -1,0 +1,57 @@
+PROOBLEM-4
+
+Given a matrix of 0's and 1's, implement a function to find the number of islands in the matrix, where an island is a
+group of connected 1's.
+
+Example:
+Input:
+matrix = [[1,1,1,1,0],
+[1,1,0,1,0],
+[1,1,0,0,0],
+[0,0,0,0,0]]
+Output:
+1
+
+Program:
+
+class prb4 {
+
+	static final int ROW = 5, COL = 5;
+	boolean isSafe(int M[][], int row, int col,
+				boolean visited[][])
+	{
+		// row number is in range, column number is in range
+		// and value is 1 and not yet visited
+		return (row >= 0) && (row < ROW) && (col >= 0)
+			&& (col < COL)
+			&& (M[row][col] == 1 && !visited[row][col]);
+	}
+	void DFS(int M[][], int row, int col,
+			boolean visited[][])
+	{
+		int rowNbr[]= new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+		int colNbr[]= new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+		visited[row][col] = true;
+		for (int k = 0; k < 8; ++k)
+			if (isSafe(M, row + rowNbr[k], col + colNbr[k],
+					visited))
+				DFS(M, row + rowNbr[k], col + colNbr[k],
+					visited);
+	}
+	int countIslands(int M[][])
+	{
+		boolean visited[][] = new boolean[ROW][COL];
+		int count = 0;
+		for (int i = 0; i < ROW; ++i)
+			for (int j = 0; j < COL; ++j)
+				if (M[i][j] == 1
+					&& !visited[i][j]) // If a cell with
+				{
+					DFS(M, i, j, visited);
+					++count;
+				}
+
+		return count;
+	}
+
+}

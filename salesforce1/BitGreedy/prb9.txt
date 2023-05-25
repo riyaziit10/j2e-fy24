@@ -1,0 +1,29 @@
+PROBLEM-9
+
+The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+Given two integers x and y, return the Hamming distance between them.
+
+Example 1:
+Input: x = 1, y = 4
+Output: 2
+Explanation:
+1 (0 0 0 1)
+4 (0 1 0 0)
+↑ ↑
+The above arrows point to positions where the corresponding bits are different.
+
+Program:
+
+import java.util.*;
+public class prb9 {
+    public static int hammingDistance(int x, int y) {
+        int z = x ^ y;
+        int res = 0;
+        while (z > 0) {
+            res++;
+            z = z & (z - 1);
+        }
+        return res;
+    }
+
+}

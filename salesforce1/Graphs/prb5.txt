@@ -1,0 +1,32 @@
+PROBLEM-5
+
+Implement a function to find the kth smallest element in a matrix, where the matrix is sorted row-wise and column-
+wise.
+
+Example:
+Input:
+matrix = [[1,5,9],
+[10,11,13],
+[12,13,15]]
+k = 8
+Output:
+13
+
+PROGRAM:
+
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int [] arr = new int[n*n];
+        int idx = 0;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<n;j++){
+                arr[idx++] = matrix[i][j];
+            }
+        }
+
+        Arrays.sort(arr);
+
+        return arr[k - 1];
+    }
+}

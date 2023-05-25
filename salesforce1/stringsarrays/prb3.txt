@@ -1,0 +1,38 @@
+PROGRAM 3
+
+Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to
+target.
+Return the sum of the three integers.
+You may assume that each input would have exactly one solution.
+Example 1:
+Input: nums = [-1,2,1,-4],
+target = 1
+Output: 2
+Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+
+PROGRAM:
+
+
+class prb3 {
+    public static int res(int[] a, int t) {
+        int n = a.length;
+        int m = Integer.MAX_VALUE;
+        Arrays.sort(a);
+        int s = 0;
+        for (int i = 0; i < n; i++) {
+            int j = i + 1;
+            int k = n - 1;
+            while (j < k) {
+                s = a[i] + a[j] + a[k];
+                if (Math.abs(s - t) < Math.abs(t - m)) {
+                    m = s;
+                } else if (s < t) {
+                    j++;
+                } else {
+                    k--;
+                }
+            }
+        }
+        return m;
+    }
+}
