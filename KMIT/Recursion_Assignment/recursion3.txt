@@ -1,0 +1,52 @@
+class ListNode {
+    int val;
+    ListNode next;
+
+    public ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class Solution{
+    private ListNode left;
+
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+        left = head;
+        reorderListUtil(head);
+    }
+
+    private ListNode reorderListUtil(ListNode right) {
+        if (right == null) {
+            return left;
+        }
+
+        ListNode nextLeft = reorderListUtil(right.next);
+
+        if (nextLeft == null) {
+            return null;
+        }
+
+        if (left == right || nextLeft == right) {
+            right.next = null;
+        } else {
+            ListNode nextLeftNext = nextLeft.next;
+            nextLeft.next = right.next;
+            right.next = nextLeft;
+            left = nextLeftNext;
+        }
+
+        return left;
+    }
+
+    private void printList(ListNode head) {
+        ListNode curr = head;
+        while (curr != null) {
+            System.out.print(curr.val + " ");
+            curr = curr.next;
+        }
+        System.out.println();
+    }
+}

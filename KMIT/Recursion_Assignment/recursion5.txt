@@ -1,0 +1,47 @@
+import java.util.*;
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+
+public class FullBinaryTrees{
+    public List<TreeNode> generateTrees(int n) {
+        List<TreeNode> result = new ArrayList<>();
+        
+        if (n == 1) {
+            result.add(new TreeNode(0));
+            return result;
+        }
+        
+        for (int i = 1; i < n; i += 2) {
+            List<TreeNode> leftSubtrees = generateTrees(i);
+            List<TreeNode> rightSubtrees = generateTrees(n - i - 1);
+            
+            for (TreeNode left : leftSubtrees) {
+                for (TreeNode right : rightSubtrees) {
+                    TreeNode root = new TreeNode(0);
+                    root.left = left;
+                    root.right = right;
+                    result.add(root);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    public static void main(String[] args) {
+	Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        FullBinaryTrees obj = new FullBinaryTrees();
+        List<TreeNode> trees = obj.generateTrees(n);
+        for (TreeNode tree : trees) {
+            System.out.println(tree);
+        }
+    }
+}
