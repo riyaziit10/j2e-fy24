@@ -1,0 +1,76 @@
+import java.util.*;
+class Problem4
+{
+    static Node head;
+    static Node tail;
+    static Map<Integer, Node> map = new HashMap<>();
+    static int capacity;
+    
+    Problem4(int cap)
+    {
+        
+        head = new Node(0,0);
+        tail = new Node(0,0);
+        map = new HashMap<>();
+        capacity=cap;
+        head.next=tail;
+        tail.prev=head;
+    }
+
+   
+    public static int get(int key)
+    {
+       
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            remove(node);
+            insert(node);
+            return node.value;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    
+    public static void set(int key, int value)
+    {
+      
+        if(map.containsKey(key)){
+            remove(map.get(key));
+        }
+        if(capacity==map.size()){
+            remove(tail.prev);
+        }
+        insert(new Node(key,value));
+    }
+    
+    private static void remove(Node node){
+        map.remove(node.key);
+        node.prev.next=node.next;
+        node.next.prev=node.prev;
+    }
+    
+    private static void insert(Node node){
+        map.put(node.key, node);
+        Node headNext = head.next;
+        head.next = node;
+        node.prev=head;
+        headNext.prev=node;
+        node.next=headNext;
+    }
+    
+    public static void main(String[] args) {
+        
+    }
+}
+
+class Node{
+    Node prev;
+    Node next;
+    int key, value;
+    Node(int key, int value){
+        this.key=key;
+        this.value=value;
+    }
+}
