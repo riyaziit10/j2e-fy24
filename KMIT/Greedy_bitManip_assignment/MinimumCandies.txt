@@ -1,0 +1,20 @@
+public class MinimumCandies{
+    public static int minTotalCandiesEaten(int n, int[] a) {
+        Arrays.sort(a);
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += a[i];
+        }
+        int avg = sum / n;
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            if (a[i] > average) {
+                res += a[i] - avg;
+            } else {
+                break;
+            }
+        }
+
+        return res;
+    }
+}

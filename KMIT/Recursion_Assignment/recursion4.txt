@@ -1,0 +1,12 @@
+public class TowersOfHanoi {
+    public static void moveDisks(int n, int source, int destination, int auxiliary) {
+        if (n == 1) {
+            System.out.println("Move disk from rod " + source + " to rod " + destination);
+            return;
+        }
+        
+        moveDisks(n - 1, source, auxiliary, destination);
+        System.out.println("Move disk from rod " + source + " to rod " + destination);
+        moveDisks(n - 1, auxiliary, destination, source);
+    }
+}

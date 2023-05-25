@@ -1,0 +1,19 @@
+public class Greedy1{
+    public static int countSlicingSteps(int N, int[] A) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int i : A) {
+            freq.put(weight, freq.getOrDefault(i, 0) + 1);
+        }
+	int count = 0;
+        while (!freq.isEmpty()) {
+            int maxi = 0;
+            for (int val : freq.values()) {
+                maxi = Math.max(maxi, val);
+            }
+            count += maxi;
+            freq.values().removeIf(f-> f == maxi);
+        }
+
+        return count;
+    }
+}

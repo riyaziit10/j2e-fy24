@@ -1,0 +1,24 @@
+class Solution {
+    private Map<String, PriorityQueue<String>> graph;
+    private List<String> itinerary;
+
+    public List<String> findItinerary(List<List<String>> tickets) {
+        graph = new HashMap<>();
+        itinerary = new ArrayList<>();
+        buildGraph(tickets);
+        dfs("JFK");
+        Collections.reverse(itinerary);
+
+        return itinerary;
+    }
+    private void dfs(String airport) {
+        PriorityQueue<String> neighbors = graph.get(airport);
+
+        while (neighbors != null && !neighbors.isEmpty()) {
+            String nextAirport = neighbors.poll();
+            dfs(nextAirport);
+        }
+
+        itinerary.add(airport);
+    }
+}

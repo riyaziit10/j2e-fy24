@@ -1,0 +1,34 @@
+class Solution {
+    public int minSwaps(int[] nums) {
+        int n = nums.length;
+        int[] sortedNums = nums.clone();
+        Arrays.sort(sortedNums);
+
+        Map<Integer, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            indexMap.put(nums[i], i);
+        }
+
+        boolean[] visited = new boolean[n];
+        int minSwaps = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (visited[i] || nums[i] == sortedNums[i]) {
+                continue;
+            }
+
+            int cycleSize = 0;
+            int j = i;
+
+            while (!visited[j]) {
+                visited[j] = true;
+                j = indexMap.get(sortedNums[j]);
+                cycleSize++;
+            }
+
+            minSwaps += cycleSize - 1;
+        }
+
+        return minSwaps;
+    }
+}

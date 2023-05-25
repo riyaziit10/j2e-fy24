@@ -1,0 +1,26 @@
+public class ValidBST{
+    private TreeNode prev;
+
+    public boolean isValidBST(TreeNode root) {
+        prev = null;
+        return isBST(root);
+    }
+
+    private boolean isBST(TreeNode node) {
+        if (node == null) {
+            return true;
+        }
+
+        if (!isBST(node.left)) {
+            return false;
+        }
+
+        if (prev != null && node.val <= prev.val) {
+            return false;
+        }
+
+        prev = node;
+
+        return isBST(node.right);
+    }
+}
