@@ -1,0 +1,415 @@
+LINKED LIST ASSIGNMENT
+
+
+PROBLEM-1
+
+
+import java.util.*;
+public class Remove{
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        for (int i = 0; i < n; i++) {
+            if (fast.next == null) {
+                if (i == n - 1) {
+                    head = head.next;
+                }
+                return head;
+            }
+            fast = fast.next;
+        }
+
+        while (fast.next != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        if (slow.next != null) {
+            slow.next = slow.next.next;
+        }
+        return head;
+    }
+
+    static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+}
+
+
+PROBLEM-2
+
+import java.util.*;
+public class Merge{
+
+    private static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+
+        if (l1 == null) {
+            return l2;
+        }
+        if (l2 == null) {
+            return l1;
+        }
+        ListNode head;
+
+        ListNode temp;
+
+        if (l1.val < l2.val) {
+            temp = head = new ListNode(l1.val);
+            l1 = l1.next;
+        } else {
+            temp = head = new ListNode(l2.val);
+            l2 = l2.next;
+        }
+
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                temp.next = new ListNode(l1.val);
+                l1 = l1.next;
+            } else {
+                temp.next = new ListNode(l2.val);
+                l2 = l2.next;
+            }
+            temp = temp.next;
+        }
+
+        while (l1 != null) {
+            temp.next = new ListNode(l1.val);
+            l1 = l1.next;
+            temp = temp.next;
+        }
+
+        while (l2 != null) {
+            temp.next = new ListNode(l2.val);
+            l2 = l2.next;
+            temp = temp.next;
+        }
+        return head;
+    }
+
+    static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+}
+
+
+
+PROBLEM-3
+
+import java.util.*;
+public class Swap{
+
+    public ListNode swapPairs(ListNode head) {
+
+        ListNode dummy = new ListNode(0);
+
+        dummy.next = head;
+
+        ListNode current = dummy;
+
+        while (current.next != null && current.next.next != null) {
+
+            ListNode first = current.next;
+
+            ListNode second = current.next.next;
+
+            first.next = second.next;
+
+            current.next = second;
+
+            current.next.next = first;
+
+            current = current.next.next;
+        }
+        return dummy.next;
+    }
+}
+
+
+
+PROBLEM-4
+
+import java.util.*;
+class List {
+	Node head; 
+
+
+	class Node {
+		int data;
+		Node next;
+		Node(int d)
+		{
+			data = d;
+			next = null;
+		}
+	}
+
+	void removeDuplicates()
+	{
+
+		Node curr = head;
+
+
+		while (curr != null) {
+			Node temp = curr;
+
+			while (temp != null && temp.data == curr.data) {
+				temp = temp.next;
+			}
+			curr.next = temp;
+			curr = curr.next;
+		}
+	}
+
+
+
+
+	public void push(int new_data)
+	{
+
+		Node new_node = new Node(new_data);
+
+
+		new_node.next = head;
+
+
+		head = new_node;
+	}
+
+
+	void printList()
+	{
+		Node temp = head;
+		while (temp != null) {
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+		}
+		System.out.println();
+	}
+}
+
+
+
+PROBLEM-5
+
+import java.util.*;
+class Solution {
+    public ListNode delete(ListNode head) {
+        ListNode dummy=new ListNode();
+        dummy.next=head;
+         ListNode curr=dummy;
+        if(head==null || head.next==null){
+             return head;
+        }
+        while(curr.next!=null && curr.next.next!=null){
+          if(curr.next.val==curr.next.next.val){
+              int value=curr.next.val;
+              while(curr.next!=null && curr.next.val==value){
+                  curr.next=curr.next.next;
+              }
+          }
+          else{
+              curr=curr.next;
+          }  
+        }
+        return dummy.next;
+
+
+    }
+}
+
+
+
+PROBLEM-6
+
+import java.util.*;
+class LRUCache {
+     Node head = new Node(0,0);
+     Node tail = new Node(0,0);
+     HashMap<Integer,Node> map = new HashMap<>();
+     int capacity;
+    public LRUCache(int _capacity) {
+        capacity = _capacity;
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    public int get(int key) {
+        if(map.containsKey(key)){
+            Node node  = map.get(key);
+            remove(node);
+            insert(node);
+            return node.value;
+        }
+        else return -1;
+    }
+
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            remove(map.get(key));
+        }
+        if(map.size() == capacity){
+            remove(tail.prev);
+
+        }
+        insert(new Node(key,value));
+    }
+     private void remove(Node node){
+         map.remove(node.key);
+         node.prev.next = node.next;
+         node.next.prev = node.prev;
+     }
+     private void insert(Node node){
+         map.put(node.key,node);
+        Node headNext = head.next;
+        head.next = node;
+        node.prev = head;
+        node.next = headNext;
+        headNext.prev = node;
+
+     }
+
+    class Node{
+        Node prev,next;
+        int key,value;
+        Node(int _key,int _val){
+            key = _key;
+            value = _val;
+        }
+    }
+}
+
+
+
+PROBLEM-7
+
+import java.util.*;
+class MyCircularDeque {
+    private int[] q;
+    private int front;
+    private int size;
+    private int capacity;
+
+
+    public MyCircularDeque(int k) {
+        q = new int[k];
+        capacity = k;
+    }
+
+
+    public boolean insertFront(int value) {
+        if (isFull()) {
+            return false;
+        }
+        if (!isEmpty()) {
+            front = (front - 1 + capacity) % capacity;
+        }
+        q[front] = value;
+        ++size;
+        return true;
+    }
+
+
+    public boolean insertLast(int value) {
+        if (isFull()) {
+            return false;
+        }
+        int idx = (front + size) % capacity;
+        q[idx] = value;
+        ++size;
+        return true;
+    }
+
+    public boolean deleteFront() {
+        if (isEmpty()) {
+            return false;
+        }
+        front = (front + 1) % capacity;
+        --size;
+        return true;
+    }
+
+
+    public boolean deleteLast() {
+        if (isEmpty()) {
+            return false;
+        }
+        --size;
+        return true;
+    }
+
+
+    public int getFront() {
+        if (isEmpty()) {
+            return -1;
+        }
+        return q[front];
+    }
+
+
+    public int getRear() {
+        if (isEmpty()) {
+            return -1;
+        }
+        int idx = (front + size - 1) % capacity;
+        return q[idx];
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+
+    public boolean isFull() {
+        return size == capacity;
+    }
+}
+
+
+
+PROBLEM-8
+
+
+import java.util.*;
+class Solution {
+public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+
+
+
+        ListNode ret = list1;
+        ListNode curr = list1;
+        ListNode curr2 = list1;
+    while(a>1){
+            a--;
+            curr = curr.next;
+        }
+
+        while(b>0){
+            b--;
+            curr2 = curr2.next;
+        }
+        curr2 = curr2.next;
+       curr.next = list2;
+
+
+
+        while(list2.next!=null){
+            list2 = list2.next;
+        } 
+        list2.next = curr2;
+        return ret;
+
+    }
+}
