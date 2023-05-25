@@ -1,0 +1,379 @@
+// problem 1:
+
+class Candies{
+    public boolean[] IsMaximum(int[] Candies,int ExtraCandies){
+        int max=0;
+        int n=Candies.length;
+        boolean[] result=new boolean[n]
+        for(int i=0;i<n;i++){
+            max=Math.max(Candies[i],max);
+        }
+        for(int i=0;i<n;i++){
+            if(Candies[i]+ExtraCandies>=max) result[i]=true;
+            else result[i]=false;
+        }
+        retrun result;
+    }
+}
+
+
+problem 2:
+
+class Solution {
+    public int maxArea(int[] height) {
+        int i=0; int j=height.length-1;
+        int ans = 0;
+        while(i < j){
+            ans = Math.max(ans,Math.min(height[i],height[j])*(j-i));
+            if(height[i]<height[j])i++;
+            else if(height[i]>height[j])j--;
+            else {
+                i++;
+                j--;
+            }
+        }
+        return ans;
+    }
+}
+
+
+problem 3:
+
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int closestSum = Integer.MAX_VALUE;
+        for(int i=0;i<nums.length-2;i++){
+            int left = i+1;
+            int right = nums.length-1;
+            while(left<right){
+                int sum = nums[i]+nums[left]+nums[right];
+                if(Math.abs(target-sum)<Math.abs(target-closestSum))
+                    closestSum = sum;
+                else if(target<sum)
+                    right--;
+                else left++;
+            }
+        }
+        return closestSum;
+    }
+}
+
+
+problem 4:
+
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int i=nums.length-2;
+        if(nums==null||nums.length<=1)
+        {
+            return;
+        }
+        while(i>=0 && nums[i]>=nums[i+1])
+        
+            i--;
+        
+      
+      if(i>=0)
+        {  int j=nums.length-1;
+            while(nums[j]<=nums[i])
+            
+              j--;
+              swap(nums,i,j);
+            
+        }
+        reverse(nums,i+1,nums.length-1);
+    }
+        public static void swap(int nums[],int i,int j)
+        {
+            int t=nums[i];
+            nums[i]=nums[j];
+          nums[j]=t;
+        }
+        public static void reverse(int nums[],int i,int j)
+        {
+            while(i<j)
+            {
+                swap(nums,i++,j--);
+            }
+        
+
+    }
+}
+
+
+// problem 5:
+class Main {
+    static int search(int arr[], int l, int h, int key)
+    {
+        if (l > h)
+            return -1;
+ 
+        int mid = (h-l)/2 +l;
+        if (arr[mid] == key)
+            return mid;
+ 
+        if (arr[l] <= arr[mid]) {
+            if (key >= arr[l] && key <= arr[mid])
+                return search(arr, l, mid - 1, key);
+            return search(arr, mid + 1, h, key);
+        }
+        if (key >= arr[mid] && key <= arr[h])
+            return search(arr, mid + 1, h, key);
+ 
+        return search(arr, l, mid - 1, key);
+    }
+}
+ 
+//  problem 6:
+
+public class FindPermutations{
+{
+	// Function for swapping two numbers
+	static void swap(int nums[], int l, int i){
+		int temp = nums[l];
+		nums[l] = nums[i];
+		nums[i] = temp;
+	}
+	
+	// Function to find the possible permutations
+	static void permutations(ArrayList<int[]> res,int[] nums, int l, int h){
+		if (l == h) {
+			res.add(Arrays.copyOf(nums, nums.length));
+			return;
+		}
+		for (int i = l; i <= h; i++) {
+			swap(nums, l, i);
+			permutations(res, nums, l + 1, h);
+			swap(nums, l, i);
+		}
+	}
+
+	// Function to get the permutations
+	static ArrayList<int[]> permute(int[] nums){
+		ArrayList<int[]> res = new ArrayList<int[]>();
+		int x = nums.length - 1;
+		permutations(res, nums, 0, x);
+		return res;
+	}
+
+}
+
+
+
+// problem 7:
+
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int n = nums.length;
+        int max = Integer.MIN_VALUE, sum = 0;
+        
+        for(int i=0;i<n;i++){
+            sum += nums[i];
+            max = Math.max(sum,max);
+            
+            if(sum<0) sum = 0;
+        }
+        
+        return max;
+    }
+}
+
+
+// problem 8:
+
+class Solution {
+    public int[][] merge(int[][] intervals) {
+         List<int[]> res = new ArrayList<>();
+
+        if(intervals.length == 0 || intervals == null){
+        return res.toArray(new int[0][]);
+        }
+        Arrays.sort(intervals,(a,b)-> a[0]-b[0]);
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        for(int[] i : intervals){
+            if(i[0] <= end){
+                end = Math.max(end,i[1]);
+            }else{
+                res.add(new int[]{start,end});
+                start = i[0];
+                end = i[1];
+            }
+        }
+        res.add(new int[]{start,end});
+        return res.toArray(new int[0][]);
+    }
+}
+
+
+// problem 9:
+
+class Solution{
+    public int[] Sort(int[] arr){
+        int ind=0;
+        int temp=0;
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]==0){
+                temp=arr[ind];
+                arr[ind]=arr[i];
+                arr[i]=temp;
+                ind++;
+            }
+        }
+        ind=arr.length-1;
+        for(int i=arr.length-1;i>=0;i--){
+            if(arr[i]==2){
+                temp=arr[i];
+                arr[ind]=arr[i];
+                arr[i]=temp;
+                ind--;
+            }
+        }
+    }
+}
+
+
+// problem 10:
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int sum=0;
+        for(int i=1;i<prices.length;i++){
+            if(prices[i]-prices[i-1]>0) sum+=prices[i]-prices[i-1];
+        }
+        return sum;
+    }
+}
+
+
+// problem 11:
+
+class Solution{
+    public int FindIndex(int[] arr){
+        int max=arr[0];
+        int maxIndex=0;
+        for(int i=1;i<arr.length;i++){
+            if(arr[i]>=max){
+                max=arr[i];
+                maxIndex=i;
+            }
+        }
+        return maxIndex;
+    }
+}
+
+
+// problem 12:
+
+public class Solution {
+
+	static double Median(int[] A, int[] B)
+	{
+		int n = A.length;
+		int m = B.length;
+		if (n > m)
+			return Median(B,A); 
+
+		int start = 0;
+		int end = n;
+		int realmidinmergedarray = (n + m + 1) / 2;
+
+		while (start <= end) {
+			int mid = (start + end) / 2;
+			int leftAsize = mid;
+			int leftBsize = realmidinmergedarray - mid;
+			int leftA = (leftAsize > 0)? A[leftAsize - 1]: Integer.MIN_VALUE;
+			int leftB = (leftBsize > 0) ? B[leftBsize - 1]: Integer.MIN_VALUE;
+			int rightA = (leftAsize < n)? A[leftAsize]: Integer.MAX_VALUE;
+			int rightB = (leftBsize < m)? B[leftBsize]: Integer.MAX_VALUE;
+
+			if (leftA <= rightB && leftB <= rightA) {
+				if ((m + n) % 2 == 0)
+					return (Math.max(leftA, leftB)+ Math.min(rightA, rightB))/ 2.0;
+				return Math.max(leftA, leftB);
+			}
+			else if (leftA > rightB) {
+				end = mid - 1;
+			}
+			else
+				start = mid + 1;
+		}
+		return 0.0;
+	}
+
+}
+
+
+
+problem 13:
+
+class Solution {
+    public int maxArea(int[] height) {
+        int l=0;
+        int r=height.length-1;
+        int m=0;
+        while(l<r)
+        {
+            int w=r-l;
+            int h=Math.min(height[l],height[r]);
+            int a=w*h;
+            m=Math.max(m,a);
+            if(height[l]<height[r])
+            {
+                l++;
+            }
+            else if(height[l]>height[r])
+            {
+                r--;
+            }
+            else{
+l++;
+            r--;}
+        }
+        return m;
+        
+    }
+}
+
+
+// problem 14:
+
+class Solution{
+    public int MaxConsecutiveOnes(int[] arr){
+        int max=0;
+        int count=0;
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]=1){
+                count++;
+            }
+            else{
+                max=Math.max(max,count);
+                count=0;
+            }
+        }
+        return max;
+    }
+}
+
+
+// problem 15:
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+      
+       PriorityQueue<Integer>p=new PriorityQueue<>();
+       for(int i:nums)
+       {
+           p.add(i);
+
+       
+       if(p.size()>k)
+       {
+           p.remove();
+       }
+       }
+        return p.peek();
+       }  
+        
+}
