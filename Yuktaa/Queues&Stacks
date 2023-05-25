@@ -1,0 +1,395 @@
+PROBLEM-1
+
+
+
+
+class Queues
+{
+    Queue<Integer> q1 = new LinkedList<Integer>();
+    Queue<Integer> q2 = new LinkedList<Integer>();
+
+
+    void push(int a)
+    {
+            q2.add(a);
+
+            while (!q1.isEmpty()) {
+                q2.add(q1.peek());     
+                q1.remove();
+            }
+
+            Queue<Integer> q = q1;
+            q1 = q2;
+            q2 = q;
+        }   
+
+
+
+    int pop()    {
+       if (q1.isEmpty())
+                return -1;
+          return   q1.remove();  
+          }
+
+}
+
+
+PROBLEM-2
+
+
+
+class StackQueue
+{
+    Stack<Integer> s1 = new Stack<Integer>();
+    Stack<Integer> s2 = new Stack<Integer>();
+
+    void Push(int x)
+    {
+
+	   while(!s1.isEmpty()){
+	       s2.push(s1.pop());
+	   }
+	   s1.push(x);
+	   while(!s2.isEmpty()){
+	       s1.push(s2.pop());
+	   }
+    }
+
+
+
+    int Pop()
+    {
+
+	   if(s1.isEmpty()){
+	       return -1;
+	   }
+	   int x=s1.peek();
+	   s1.pop();
+	   return x;
+    }
+}
+
+
+PROBLEM-3
+
+
+
+
+class Solution
+{
+
+  static ArrayList <Integer> max_of_subarrays(int arr[], int n, int k)
+    {
+
+        int left=0;
+        ArrayList<Integer>al=new ArrayList<>();
+       for(int i=k-1; i<arr.length;i++)
+       {
+           int ans=returnMax(arr,left,i);
+           al.add(ans);
+           left++;
+       }
+       return al;
+    }
+  static int returnMax(int []arr,int startindex,int k)
+  { int max=Integer.MIN_VALUE;
+      for(int i=startindex;i<=k;i++)
+      {
+          if(arr[i]>max)
+              max=arr[i];
+      }
+
+      return max;
+  }
+}
+
+
+PROBLEM-4
+
+
+
+
+
+class LRUCache
+{
+    static Node head;
+    static Node tail;
+    static Map<Integer, Node> map = new HashMap<>();
+    static int capacity;
+
+    LRUCache(int cap)
+    {
+
+        head = new Node(0,0);
+        tail = new Node(0,0);
+        map = new HashMap<>();
+        capacity=cap;
+        head.next=tail;
+        tail.prev=head;
+    }
+
+
+    public static int get(int key)
+    {
+
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            remove(node);
+            insert(node);
+            return node.value;
+        }
+        else{
+            return -1;
+        }
+    }
+
+
+    public static void set(int key, int value)
+    {
+
+        if(map.containsKey(key)){
+            remove(map.get(key));
+        }
+        if(capacity==map.size()){
+            remove(tail.prev);
+        }
+        insert(new Node(key,value));
+    }
+
+    private static void remove(Node node){
+        map.remove(node.key);
+        node.prev.next=node.next;
+        node.next.prev=node.prev;
+    }
+
+    private static void insert(Node node){
+        map.put(node.key, node);
+        Node headNext = head.next;
+        head.next = node;
+        node.prev=head;
+        headNext.prev=node;
+        node.next=headNext;
+    }
+}
+
+class Node{
+    Node prev;
+    Node next;
+    int key, value;
+    Node(int key, int value){
+        this.key=key;
+        this.value=value;
+    }
+}
+
+
+PROBLEM-5
+
+
+
+
+
+
+class Solution
+{
+    ArrayList<Integer> rotation(int N)
+    {
+
+        ArrayList<Integer> res = new ArrayList<Integer>();
+       int[] arr = new int[1001];
+       Queue<Integer> q = new LinkedList<>();
+       for(int i=1; i<=N; i++){
+           q.add(i);
+       }
+       int i=1;
+       while(!q.isEmpty()){
+           int j=0;
+           while(j<i){
+               int x = q.peek();
+               q.poll();
+               q.add(x);
+               j++;
+           }
+           int x = q.peek();
+           if(arr[x] != 0){
+               res.add(-1);
+               return res;
+           }
+           arr[x] = i;
+           q.poll();
+           i++;
+       }
+       for(i=1; i<=N; i++)
+           res.add(arr[i]);
+       return res;
+   }
+}
+
+
+PROBLEM-6
+
+class Solution {
+    public boolean isValid(String s) {
+
+        HashMap<Character, Character> Hmap = new HashMap<Character, Character>();
+        Hmap.put(')','(');
+        Hmap.put('}','{');
+        Hmap.put(']','[');
+
+        Stack<Character> stack = new Stack<Character>();
+
+        for (int idx = 0; idx < s.length(); idx++){
+
+            if (s.charAt(idx) == '(' || s.charAt(idx) == '{' || s.charAt(idx) == '[') {
+                stack.push(s.charAt(idx));
+                continue;
+            }
+
+            if (stack.size() == 0 || Hmap.get(s.charAt(idx)) != stack.pop()) {
+                return false;
+            }
+        }
+
+        if (stack.size() == 0) {
+            return true;
+        }
+        return false;
+    }
+}
+
+
+PROBLEM-7
+
+
+class Solution
+{
+
+    public static long[] nextLargerElement(long[] arr, int n)
+    { 
+
+        long[] r=new long[n];
+        r[n-1]=-1;
+        Stack<Long>s=new Stack<>();
+        s.push(arr[n-1]);
+        for(int i=n-2;i>=0;i--){
+            long v=arr[i];
+
+        while(s.isEmpty()==false &&v>=s.peek())
+        {
+
+                s.pop();
+
+        }
+        if(s.isEmpty()==true){
+            r[i]=-1;
+        }
+        else{
+            r[i]=s.peek();
+        }
+        s.push(v);
+        }
+        return r;
+    }
+}
+
+
+PROBLEM-8
+
+class Solution {
+    public String removeDuplicates(String s) {
+        StringBuilder se=new StringBuilder();
+        for(int i=0;i<s.length();i++)
+        {
+            if(se.length()>0 &&se.charAt(se.length()-1)== s.charAt(i))
+            {
+                se.deleteCharAt(se.length()-1);
+            }
+            else{
+                se.append(s.charAt(i));
+            }
+        }
+        return se.toString();
+
+    }
+}
+
+
+
+PROBLEM-9
+
+class StockSpanner {
+    List<Integer> list; int i;
+
+    public StockSpanner() {
+        list = new ArrayList<Integer>();
+        i = 0;
+    }
+
+    public int next(int price) {
+        list.add(i, price); 
+        int j=i; int count = 0;
+        while(list.get(j) <= price){
+            if(j==0) {
+                count++;
+                break;
+            }
+            else{
+                count++; 
+                j--;
+            }
+        }
+        i++;
+        return count;
+    }
+}
+
+
+PROBLEM-10
+
+
+
+public class Main {
+	public static int eval(String[] tokens)
+	{
+
+		int i = 0;
+
+		int lastNum = -1;
+		while (i < tokens.length) {
+
+			if ("/*+-".contains(tokens[i])) {
+
+				int val1= Integer.valueOf(tokens[lastNum - 1]);
+
+				int val2 = Integer.valueOf(tokens[lastNum]);
+
+				int ans = 0;
+
+				if (tokens[i].equals("*"))
+					ans = val1 * val2;
+				else if (tokens[i].equals("/"))
+					ans = val1 / val2;
+				else if (tokens[i].equals("+"))
+					ans = val1 + val2;
+				else if (tokens[i].equals("-"))
+					ans = val1 - val2;
+
+				tokens[lastNum - 1] = Integer.toString(ans);
+
+				lastNum--;
+			}
+
+			else {
+
+				lastNum++;
+
+				tokens[lastNum] = tokens[i];
+			}
+			i++; 
+		}
+		return Integer.valueOf(
+			tokens[lastNum]); 
+	}
+
+
+}
