@@ -1,0 +1,25 @@
+class Graph {
+    private void dfs(int v, boolean[] visited) {
+        visited[v] = true;
+
+        for (int neighbor : adjList.get(v)) {
+            if (!visited[neighbor]) {
+                dfs(neighbor, visited);
+            }
+        }
+    }
+
+    public int countConnectedComponents() {
+        boolean[] visited = new boolean[V];
+        int count = 0;
+
+        for (int v = 0; v < V; v++) {
+            if (!visited[v]) {
+                dfs(v, visited);
+                count++;
+            }
+        }
+
+        return count;
+    }
+}
