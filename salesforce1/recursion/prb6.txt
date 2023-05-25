@@ -1,0 +1,22 @@
+PROGRAM 6
+
+Print sums of all subsets of a given set of size n.
+Example 1:
+Input: arr[] = {2, 3}
+
+Output: 0 2 3 5
+
+Program:
+
+import java.util.*;
+public class p6 {
+    public static void sums(int[] a, int l, int r, int sum) {
+        if (l > r) {
+            System.out.print(sum + " ");
+            return;
+        }
+        sums(a, l + 1, r, sum + a[l]);
+        sums(a, l + 1, r, sum);
+    }
+}
+

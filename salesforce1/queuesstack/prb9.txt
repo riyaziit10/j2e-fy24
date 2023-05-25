@@ -1,0 +1,34 @@
+PROBLEM 9.
+
+WRITE A CLASS STOCKSPANNER WHICH COLLECTS DAILY PRICE QUOTES FOR SOME STOCK, AND
+RETURNS THE SPAN OF THAT STOCK'S PRICE FOR THE CURRENT DAY. THE SPAN OF THE STOCK'S PRICE TODAY IS
+DEFINED AS THE MAXIMUM NUMBER OF CONSECUTIVE DAYS (STARTING FROM TODAY AND GOING BACKWARDS)
+FOR WHICH THE PRICE OF THE STOCK WAS LESS THAN OR EQUAL TO TODAY'S PRICE.
+
+Program:
+
+class StockSpanner {
+    List<Integer> list; int i;
+
+    public StockSpanner() {
+        list = new ArrayList<Integer>();
+        i = 0;
+    }
+
+    public int next(int price) {
+        list.add(i, price); 
+        int j=i; int count = 0;
+        while(list.get(j) <= price){
+            if(j==0) {
+                count++;
+                break;
+            }
+            else{
+                count++; 
+                j--;
+            }
+        }
+        i++;
+        return count;
+    }
+}

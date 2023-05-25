@@ -1,0 +1,41 @@
+PROGRAM 4
+
+You have N pills of characteristic values [a1, a2.....an]
+On each day i, you can take the ith pill and increase your health by ai points or Do nothing and take 1 point of
+damage
+H = H - 1, where H is a value denoting your health.
+You die if your health becomes zero. Initially H = V (where V is a value given in the input).
+What is the minimum number of pills you should take to survive for N days.
+
+Example 1:
+Input: N = 5, V = 1, a = [1,1,1,1,1]
+Output: 3
+
+Program:
+
+public class prb4{
+    public static int minPillsToSurvive(int N, int V, int[] a) {
+        int pillsTaken = 0;
+        int health = V;
+
+        for (int i = 0; i < N; i++) {
+            if (health <= 0) {
+                break; 
+            }
+
+            if (a[i] > 1 && health <= 1) {
+
+                pillsTaken++;
+                health = a[i] - 1;
+            } else if (a[i] > health) {
+
+                pillsTaken++;
+                health = a[i];
+            }
+
+            health--;
+        }
+
+        return pillsTaken;
+    }
+}

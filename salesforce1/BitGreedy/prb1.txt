@@ -1,0 +1,33 @@
+PROGRAM 1
+
+You are given N fruits.
+The weight of the fruits is represented by an array A.
+All those fruits which have the same weight can be sliced in one step.
+Task:
+Your task is to determine the number of steps to slice all the fruits.
+
+Example 1:
+Input: N = 4, A = [3, 6, 7, 7]
+Output: 3
+
+Program:
+
+class prb1 {
+    public static int slice(int[] a) {
+        int n = a.length;
+        int t = 0;
+        for (int i = 0; i < n; i++) {
+            int c = 0;
+            for (int j = i + 1; j < n - 1; j++) {
+                if (a[i] == a[j]) {
+                    c++;
+                }
+            }
+            if (c <= 1) {
+                t++;
+            }
+        }
+        return t;
+    }
+}
+

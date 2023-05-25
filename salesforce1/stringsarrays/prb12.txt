@@ -1,0 +1,36 @@
+PROGRAM 12
+
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+Example 1:
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+
+Program:
+
+public class prb12 {
+    public static float median(int[] a1, int[] a2) {
+        int n1 = a1.length;
+        int n2 = a2.length;
+        int[] r = new int[n1 + n2];
+        for (int i = 0; i < n1; i++) {
+            r[i] = a1[i];
+        }
+        int j = 0;
+        while (j < n2) {
+            for (int i = n1; i < n1 + n2; i++) {
+                r[i] = a2[j];
+                j++;
+            }
+        }
+        Arrays.sort(r);
+        int l = r.length;
+        float t = 0;
+        if (l % 2 == 0) {
+            t = (r[(l / 2) - 1] + r[l / 2]) / 2;
+        } else {
+            t = r[(l / 2)];
+        }
+        return t;
+    }
+}

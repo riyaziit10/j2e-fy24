@@ -1,0 +1,30 @@
+PROGRAM 6
+
+Given an array of integers, every element appears thrice except for one, which occurs once.
+Find that element that does not appear thrice.
+NOTE: Your algorithm should have a linear runtime complexity.
+Could you implement it without using extra memory?
+
+Program:
+
+public class prb6 {
+    public static int single(int[] a) {
+        Arrays.sort(a);
+        int n = a.length;
+        for (int i = 0; i < n; i++) {
+            if (a.length == 1) {
+                return a[i];
+            }
+            if (i == n - 1) {
+                return a[i];
+            }
+            if (a[i] == a[i + 1] && a[i + 1] == a[i + 2]) {
+                i = i + 2;
+            } else {
+                return a[i];
+            }
+        }
+        return -1;
+    }
+
+}
