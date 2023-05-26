@@ -1,0 +1,369 @@
+PROGRAM 1
+
+package queuesstack;
+import java.util.*;
+public class p1{
+    static class Stack{
+        static Queue<Integer>q1=new LinkedList<Integer>();
+        static Queue<Integer>q2=new LinkedList<Integer>();
+        static void push(int x){
+            q2.add(x);
+            while(!q1.isEmpty()){
+                q2.add(q1.peek());
+                q1.remove();
+            }
+            Queue<Integer>q=q1;
+            q1=q2;
+            q2=q;
+        }
+        static void pop(){
+            if(q1.isEmpty()){
+                return;
+            }
+            q1.remove();
+        }
+        static int top(){
+            if(q1.isEmpty()){
+                return -1;
+            }
+            return q1.peek();
+        }
+    }
+}
+
+
+
+PROGRAM 2
+
+package queuesstack;
+import java.util.*;
+public class p2{
+    static class queue{
+        Stack<Integer>s1=new Stack<>();
+        Stack<Integer>s2=new Stack<>();
+        
+        public void enqueue(int x){
+            while(!s1.isEmpty()){
+                s2.push(s1.pop());
+            }
+            s1.push(x);
+            while(!s2.isEmpty()){
+                s1.push(s2.pop());
+            }
+        }
+        public void dequeue(){
+            if(s1.isEmpty()){
+                System.out.println(-1+" ");
+                System.exit(0);
+            }
+            System.out.println(s1.pop()+" ");
+        }
+    }
+}
+
+
+
+PROGRAM 3
+
+package queuesstack;
+class p3
+{
+  static ArrayList <Integer> max_of_subarrays(int arr[], int n, int k)
+    {
+        int left=0;
+        ArrayList<Integer>al=new ArrayList<>();
+       for(int i=k-1; i<arr.length;i++)
+       {
+           int ans=returnMax(arr,left,i);
+           al.add(ans);
+           left++;
+       }
+       return al;
+    }
+  static int returnMax(int []arr,int startindex,int k)
+  { 
+    int max=Integer.MIN_VALUE;
+      for(int i=startindex;i<=k;i++)
+      {
+          if(arr[i]>max)
+              max=arr[i];
+      }
+
+    return max;
+  }
+}
+
+
+
+PROGARM 4
+
+class LRUCache
+{
+    static Node head;
+    static Node tail;
+    static Map<Integer, Node> map = new HashMap<>();
+    static int capacity;
+
+    LRUCache(int cap)
+    {
+
+        head = new Node(0,0);
+        tail = new Node(0,0);
+        map = new HashMap<>();
+        capacity=cap;
+        head.next=tail;
+        tail.prev=head;
+    }
+
+
+    public static int get(int key)
+    {
+
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            remove(node);
+            insert(node);
+            return node.value;
+        }
+        else{
+            return -1;
+        }
+    }
+
+
+    public static void set(int key, int value)
+    {
+
+        if(map.containsKey(key)){
+            remove(map.get(key));
+        }
+        if(capacity==map.size()){
+            remove(tail.prev);
+        }
+        insert(new Node(key,value));
+    }
+
+    private static void remove(Node node){
+        map.remove(node.key);
+        node.prev.next=node.next;
+        node.next.prev=node.prev;
+    }
+
+    private static void insert(Node node){
+        map.put(node.key, node);
+        Node headNext = head.next;
+        head.next = node;
+        node.prev=head;
+        headNext.prev=node;
+        node.next=headNext;
+    }
+}
+
+class Node{
+    Node prev;
+    Node next;
+    int key, value;
+    Node(int key, int value){
+        this.key=key;
+        this.value=value;
+    }
+}
+
+
+
+PROGRAM 5
+
+class p5{
+    ArrayList<Integer> rotation(int n){
+       ArrayList<Integer> res = new ArrayList<Integer>();
+       int[] arr = new int[1001];
+       Queue<Integer> q = new LinkedList<>();
+       for(int i=1; i<=n; i++){
+           q.add(i);
+       }
+       int i=1;
+       while(!q.isEmpty()){
+           int j=0;
+           while(j<i){
+               int x = q.peek();
+               q.poll();
+               q.add(x);
+               j++;
+           }
+           int x = q.peek();
+           if(arr[x] != 0){
+               res.add(-1);
+               return res;
+           }
+           arr[x] = i;
+           q.poll();
+           i++;
+       }
+       for(i=1; i<=n; i++)
+           res.add(arr[i]);
+       return res;
+   }
+}
+
+
+
+PROGRAM 6
+
+package queuesstack;
+import java.util.*;
+public class p6 {
+    public boolean isValid(String s) {
+        Stack<Character>st=new Stack<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            if(ch=='(' || ch=='[' ||  ch=='{'){
+                st.push(ch);
+            }
+            if(ch==')'){
+                if(st.size()==0 || st.peek()!='('){
+                    return false;
+                }
+                st.pop();
+            }
+            if(ch=='}'){
+                if(st.size()==0 || st.peek()!='{'){
+                    return false;
+                }
+                st.pop();
+            }
+            if(ch==']'){
+                if(st.size()==0 || st.peek()!='['){
+                    return false;
+                }
+                st.pop();
+            }
+
+        }
+        return st.empty();
+    }
+}
+
+
+
+PROGRAM 7
+
+class p7
+{
+    public static long[] nextLargerElement(long[] arr, int n)
+    { 
+
+        long[] r=new long[n];
+        r[n-1]=-1;
+        Stack<Long>s=new Stack<>();
+        s.push(arr[n-1]);
+        for(int i=n-2;i>=0;i--){
+            long v=arr[i];
+
+        while(s.isEmpty()==false &&v>=s.peek())
+        {
+
+                s.pop();
+
+        }
+        if(s.isEmpty()==true){
+            r[i]=-1;
+        }
+        else{
+            r[i]=s.peek();
+        }
+        s.push(v);
+        }
+        return r;
+    }
+}
+
+
+
+PROGRAM 8
+
+package queuesstack;
+import java.util.*;
+public class p8 {
+    public String removeDuplicates(String s) {
+        Stack<Character>st=new Stack<>();
+        for(int i=0;i<s.length();i++){
+            if(!st.empty() && s.charAt(i)==st.peek() ){
+                st.pop();
+            }
+            else{
+                st.push(s.charAt(i));
+            }
+        }
+        String res="";
+        for(char c:st){
+            res+=c+"";
+        }
+        return res;
+    }
+}
+
+
+
+PROGRAM 9
+
+class StockSpanner {
+    List<Integer> list; int i;
+
+    public StockSpanner() {
+        list = new ArrayList<Integer>();
+        i = 0;
+    }
+
+    public int next(int price) {
+        list.add(i, price); 
+        int j=i; int count = 0;
+        while(list.get(j) <= price){
+            if(j==0) {
+                count++;
+                break;
+            }
+            else{
+                count++; 
+                j--;
+            }
+        }
+        i++;
+        return count;
+    }
+}
+
+
+
+
+PROGRAM 10
+
+package queuesstack;
+import java.util.*;
+class p10 {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> st=new Stack();
+        int a,b;
+        for(String i: tokens){
+            if(i.equals("+")){
+                st.push(st.pop()+st.pop());
+            }
+            else if(i.equals("-")){
+                a=st.pop();
+                b=st.pop();
+                st.push(b-a);
+            }
+            else if(i.equals("*")){
+                st.push(st.pop() * st.pop());
+            }
+            else if(i.equals("/")){
+                a=st.pop();
+                b=st.pop();
+                st.push(b/a);
+            }
+            else{
+                st.push(Integer.parseInt(i));
+            }
+        }
+        return st.pop();
+    }
+}

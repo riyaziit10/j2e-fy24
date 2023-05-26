@@ -1,0 +1,191 @@
+PROGRAM 1
+
+public class p1 {
+    public static void printKLengthString(char set[], String sequence, int n, int k) {
+        if (k == 0) {
+            System.out.print(sequence + "\t");
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            String newSequence = sequence + set[i];
+            printKLengthString(set, newSequence, n, k - 1);
+        }
+    }
+}
+
+
+
+PROGRAM 2
+
+import java.util.*;
+public class p2 {
+    public static int paths(int n, int m) {
+        int dp[][] = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
+                }
+            }
+        }
+        return dp[n - 1][m - 1];
+    }
+}
+
+
+
+
+PROGRAM 3
+
+class Solution {
+
+    private ListNode temp;
+    private boolean isStop;
+
+    public void reorderList(ListNode head) {
+        temp = head;
+        isStop = false;
+        reorder(head);
+    }
+
+    private void reorder(ListNode head) {
+        if (head == null) return;
+        reorder(head.next);
+
+        if (!isStop) {
+            ListNode next = temp.next;
+            temp.next = head;
+            head.next = next;
+            temp = next;
+        }
+
+        if (temp != null && temp.next == head) {
+            temp.next = null;
+            isStop = true;
+        }
+    }
+}
+
+
+
+PROGRAM 4
+
+class p4
+{
+    public static void move(int disks, int source, int auxiliary, int target)
+    {
+        if (disks > 0)
+        {
+            move(disks - 1, source, target, auxiliary);
+ 
+            System.out.println("Move disk " + disks + " from " + source + " —> " +target);
+ 
+            move(disks - 1, auxiliary, source, target);
+        }
+    }
+
+}
+
+
+
+
+PROGRAM 5
+
+class P5{
+Map<Integer , List<TreeNode>> map = new HashMap<>();
+public List<TreeNode> allPossibleFBT(int n) {
+
+    if(!map.containsKey(n)){
+        List<TreeNode> res = new ArrayList<>();
+
+        if(n == 1){
+            res.add(new TreeNode(0,null,null));
+        } else {
+            for(int i = 1 ; i < n ; i += 2){
+                List<TreeNode> leftSubtree = allPossibleFBT(i);
+                List<TreeNode> rightSubtree = allPossibleFBT(n - i - 1);
+
+                for(TreeNode left : leftSubtree){
+                    for(TreeNode right : rightSubtree){
+                        res.add(new TreeNode(0,left,right));
+                    }
+                }
+            }
+        }
+        map.put(n , res);
+    }
+
+    return map.get(n);
+}
+}
+
+
+
+PROGRAM 6
+
+import java.util.*;
+public class p6 {
+    public static void sums(int[] a, int l, int r, int sum) {
+        if (l > r) {
+            System.out.print(sum + " ");
+            return;
+        }
+        sums(a, l + 1, r, sum + a[l]);
+        sums(a, l + 1, r, sum);
+    }
+}
+
+
+
+PROGRAM 7
+
+import java.util.*;
+public class p7 {
+    public static int knapSack(int w, int wt[], int p[], int n) {
+        if (n == 0 || w == 0)
+            return 0;
+        if (wt[n - 1] > w)
+            return knapSack(w, wt, p, n - 1);
+        else
+            return Math.max(p[n - 1] + knapSack(w - wt[n - 1], wt, p, n - 1), knapSack(w, wt, p, n - 1));
+    }
+}
+
+
+
+PROGRAM 8
+
+import java.util.*;
+public class p8 {
+    public static List<List<String>> partition(String s) {
+        List<List<String>> res = new ArrayList<>();
+        List<String> t = new ArrayList<>();
+        solve(0, s, res, t);
+        return res;
+    }
+
+    public static void solve(int index, String s, List<List<String>> res, List<String> t) {
+        if (index == s.length()) {
+            res.add(new ArrayList<>(t));
+            return;
+        }
+        for (int i = index; i < s.length(); i++) {
+            if (isPalindrome(s, index, i)) {
+                t.add(s.substring(index, i + 1));
+                solve(i + 1, s, res, t);
+                t.remove(t.size() - 1);
+            }
+        }
+    }
+
+    public static boolean isPalindrome(String s, int start, int end) {
+        while (start <= end) {
+            if (s.charAt(start++) != s.charAt(end--)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

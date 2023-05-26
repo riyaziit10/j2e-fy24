@@ -1,0 +1,197 @@
+PROGRAM 1
+
+public class p1 {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+       
+        if (p == null && q == null) return true;
+        if (p == null && q != null || p != null && q == null) return false;
+        if (p.val != q.val) return false;
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }
+}
+
+
+
+PROGRAM 2
+
+class p2 {
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null){
+            return true;
+        }
+        return Symmetric(root.left,root.right);
+    }
+    public boolean Symmetric(TreeNode left1,TreeNode right1){
+        if(left1==null && right1==null)return true;
+        if((left1==null && right1!=null) || (left1!=null && right1==null))
+            return false;
+        if(left1.val==right1.val){
+           return Symmetric(left1.left,right1.right) &&Symmetric(left1.right,right1.left);
+        }
+        else{
+            return false;
+        }
+    }
+}
+
+
+
+PROGRAM 3
+
+class p3 {
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null){
+            return root;
+        }
+        invertTree(root.left);
+        invertTree(root.right);
+        
+        TreeNode curr = root.left;
+        root.left = root.right;
+        root.right = curr;
+        return root;       
+    }
+}
+
+
+
+PROGRAM 4
+ 
+public class p4 {
+    private boolean result = true;
+
+    public boolean isBalanced(TreeNode root) {
+        maxDepth(root);
+        return result;
+    }   
+
+    public int maxDepth(TreeNode root) {
+        if (root == null)
+            return 0;
+        int l = maxDepth(root.left);
+        int r = maxDepth(root.right);
+        if (Math.abs(l - r) > 1)
+            result = false;
+        return 1 + Math.max(l, r);
+    }
+}
+
+
+
+PROGRAM 5
+
+class p5 {
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) return null;
+        TreeNode node = new TreeNode();
+        if (root1 != null) node.val += root1.val;
+        if (root2 != null) node.val += root2.val;
+        node.left = mergeTrees(root1 != null ? root1.left : null, root2 != null ? root2.left : null);
+        node.right = mergeTrees(root1 != null ? root1.right : null,root2 != null ? root2.right : null);
+        return node;
+    }
+}
+
+
+
+PROGRAM 6
+
+class p6 {
+    ArrayList<Integer> al=new ArrayList<>();
+    public boolean isValidBST(TreeNode root) {
+        inorder(root);
+        for(int i=0;i<al.size()-1;i++){
+            if(al.get(i)>=al.get(i+1)){
+                return false;
+            }
+        }
+        return true;
+        
+    }
+    public void inorder(TreeNode root){
+        if(root!=null){
+            inorder(root.left);
+            al.add(root.val);
+            inorder(root.right);
+
+        }
+    }
+}
+
+
+
+PROGRAM 7
+
+public int kthSmallest(TreeNode root, int k) {
+     Stack<TreeNode> stack = new Stack<TreeNode>();
+     TreeNode p = root;
+     int count = 0;
+     
+     while(!stack.isEmpty() || p != null) {
+         if(p != null) {
+             stack.push(p);  // Just like recursion
+             p = p.left;   
+             
+         } else {
+            TreeNode node = stack.pop();
+            if(++count == k) return node.val; 
+            p = node.right;
+         }
+     }
+     
+     return Integer.MIN_VALUE;
+ }
+
+
+
+PROGRAM 8a
+
+public class Solution {
+  public TreeNode sortedArrayToBST(int[] nums) {
+    return helper(nums, 0, nums.length-1);
+  }
+
+  private TreeNode helper(int[] nums, int l, int r){
+    if (l>r) return null;
+    if (l==r) return new TreeNode(nums[l]);
+    int mid = (l+r)/2;
+    TreeNode root = new TreeNode(nums[mid]);
+    root.left = helper(nums, l, mid-1);
+    root.right = helper(nums, mid+1, r);
+    return root;
+  }
+}
+
+
+
+PROGRAM 8b
+
+class Solution {
+    public int rangeSumBST(TreeNode root, int L, int R) {
+        if (root == null) {
+            return 0;
+        }
+        int val = 0;
+        if (root.val >= L && root.val <= R) {
+            val = root.val;
+        }
+        
+        return val + rangeSumBST(root.left, L, R) + rangeSumBST(root.right, L, R);
+    }
+}
+
+
+
+PROGRAM 9
+
+class Solution {
+	public TreeNode searchBST(TreeNode root, int val) {
+		while (root != null)
+		{
+			if ( val < root.val ) root = root.left;
+			else if ( val > root.val ) root = root.right;
+			else return root;
+		}
+		return root;
+	}
+}

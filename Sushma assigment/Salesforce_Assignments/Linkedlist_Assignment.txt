@@ -1,0 +1,342 @@
+PROGRAM 1
+
+public class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+       ListNode newHead = new ListNode(0);
+       newHead.next = head;
+       ListNode p = newHead;
+       ListNode runner = newHead;
+       while(n>0){
+           runner = runner.next;
+           n--;
+       }
+       while(runner.next!=null){
+           runner = runner.next;
+           p=p.next;
+       }
+       p.next = p.next.next;
+       return newHead.next;
+    }
+    
+}
+
+
+
+PROGRAM 2
+
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1==null){
+            return l2;
+        }
+        if(l2==null){
+            return l1;
+        }
+        ListNode mergehead;
+        if(l1.val<l2.val){
+            mergehead=l1;
+            mergehead.next=mergeTwoLists(l1.next,l2);
+        }
+        else{
+            mergehead=l2;
+            mergehead.next=mergeTwoLists(l1,l2.next);
+        }
+        return mergehead;
+    }
+}
+
+
+
+PROGRAM 3
+
+public class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if ((head == null)||(head.next == null))
+            return head;
+        ListNode n = head.next;
+        head.next = swapPairs(head.next.next);
+        n.next = head;
+        return n;
+    }
+}
+
+
+
+PROGRAM 4
+
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode list = head;
+         
+         while(list != null) {
+        	 if (list.next == null) {
+        		 break;
+        	 }
+        	 if (list.val == list.next.val) {
+        		 list.next = list.next.next;
+        	 } else {
+        		 list = list.next;
+        	 }
+         }
+         
+         return head;
+    }
+}
+
+
+
+PROGRAM 5
+
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        while(cur != null && cur.next != null){
+            if(cur.val != cur.next.val){
+                pre = cur;
+                cur = cur.next;
+            }else{
+                while(cur.next != null && cur.next.val == cur.val){
+                    cur = cur.next;
+                }
+                if(pre != null){
+                    pre.next = cur.next;
+                }else{
+                    head = cur.next;
+                }
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+}
+
+
+
+PROGRAM 6
+
+import java.util.Hashtable;
+
+
+public class LRUCache {
+
+class DLinkedNode {
+  int key;
+  int value;
+  DLinkedNode pre;
+  DLinkedNode post;
+}
+
+private void addNode(DLinkedNode node) {
+    
+  node.pre = head;
+  node.post = head.post;
+
+  head.post.pre = node;
+  head.post = node;
+}
+
+/**
+ * Remove an existing node from the linked list.
+ */
+private void removeNode(DLinkedNode node){
+  DLinkedNode pre = node.pre;
+  DLinkedNode post = node.post;
+
+  pre.post = post;
+  post.pre = pre;
+}
+
+/**
+ * Move certain node in between to the head.
+ */
+private void moveToHead(DLinkedNode node){
+  this.removeNode(node);
+  this.addNode(node);
+}
+
+// pop the current tail. 
+private DLinkedNode popTail(){
+  DLinkedNode res = tail.pre;
+  this.removeNode(res);
+  return res;
+}
+
+private Hashtable<Integer, DLinkedNode> 
+  cache = new Hashtable<Integer, DLinkedNode>();
+private int count;
+private int capacity;
+private DLinkedNode head, tail;
+
+public LRUCache(int capacity) {
+  this.count = 0;
+  this.capacity = capacity;
+
+  head = new DLinkedNode();
+  head.pre = null;
+
+  tail = new DLinkedNode();
+  tail.post = null;
+
+  head.post = tail;
+  tail.pre = head;
+}
+
+public int get(int key) {
+
+  DLinkedNode node = cache.get(key);
+  if(node == null){
+    return -1; // should raise exception here.
+  }
+
+  // move the accessed node to the head;
+  this.moveToHead(node);
+
+  return node.value;
+}
+
+
+public void put(int key, int value) {
+  DLinkedNode node = cache.get(key);
+
+  if(node == null){
+
+    DLinkedNode newNode = new DLinkedNode();
+    newNode.key = key;
+    newNode.value = value;
+
+    this.cache.put(key, newNode);
+    this.addNode(newNode);
+
+    ++count;
+
+    if(count > capacity){
+      // pop the tail
+      DLinkedNode tail = this.popTail();
+      this.cache.remove(tail.key);
+      --count;
+    }
+  }else{
+    // update the value.
+    node.value = value;
+    this.moveToHead(node);
+  }
+}
+
+}
+
+
+
+
+PROGRAM 7
+
+class MyCircularDeque {
+    private int[] q;
+    private int front;
+    private int size;
+    private int capacity;
+
+
+    public MyCircularDeque(int k) {
+        q = new int[k];
+        capacity = k;
+    }
+
+
+    public boolean insertFront(int value) {
+        if (isFull()) {
+            return false;
+        }
+        if (!isEmpty()) {
+            front = (front - 1 + capacity) % capacity;
+        }
+        q[front] = value;
+        ++size;
+        return true;
+    }
+
+
+    public boolean insertLast(int value) {
+        if (isFull()) {
+            return false;
+        }
+        int idx = (front + size) % capacity;
+        q[idx] = value;
+        ++size;
+        return true;
+    }
+
+    public boolean deleteFront() {
+        if (isEmpty()) {
+            return false;
+        }
+        front = (front + 1) % capacity;
+        --size;
+        return true;
+    }
+
+
+    public boolean deleteLast() {
+        if (isEmpty()) {
+            return false;
+        }
+        --size;
+        return true;
+    }
+
+
+    public int getFront() {
+        if (isEmpty()) {
+            return -1;
+        }
+        return q[front];
+    }
+
+
+    public int getRear() {
+        if (isEmpty()) {
+            return -1;
+        }
+        int idx = (front + size - 1) % capacity;
+        return q[idx];
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+
+    public boolean isFull() {
+        return size == capacity;
+    }
+}
+
+
+
+
+PROGRAM 8
+
+class Solution {
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        ListNode athNode=list1;
+        
+        for(int i=0;i<a-1;i++)
+        {
+            athNode=athNode.next;
+        }
+        
+        ListNode bthNode=athNode;
+        for(int i=a;i<=b;i++)
+        {
+            bthNode=bthNode.next;
+        }
+        athNode.next=list2;
+        while(list2.next!=null)
+        {
+            list2=list2.next;
+        }
+        list2.next=bthNode.next;
+        return list1;
+        
+    }
+}
