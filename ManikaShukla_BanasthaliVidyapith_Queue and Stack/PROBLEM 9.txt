@@ -1,0 +1,44 @@
+PROBLEM 9. WRITE A CLASS STOCKSPANNER WHICH COLLECTS DAILY PRICE QUOTES FOR SOME STOCK, AND
+RETURNS THE SPAN OF THAT STOCK'S PRICE FOR THE CURRENT DAY. THE SPAN OF THE STOCK'S PRICE TODAY IS
+DEFINED AS THE MAXIMUM NUMBER OF CONSECUTIVE DAYS (STARTING FROM TODAY AND GOING BACKWARDS)
+FOR WHICH THE PRICE OF THE STOCK WAS LESS THAN OR EQUAL TO TODAY'S PRICE.
+Code:
+#include <stack>
+#include <vector>
+#include <iostream>
+
+class StockSpanner {
+private:
+    std::stack<std::pair<int, int>> prices; // pair of <price, span>
+
+public:
+    int next(int price) {
+        int span = 1;
+
+        while (!prices.empty() && price >= prices.top().first) {
+            span += prices.top().second;
+            prices.pop();
+        }
+
+        prices.push({ price, span });
+        return span;
+    }
+};
+
+int main() {
+    StockSpanner spanner;
+    int numDays;
+
+    std::cout << "Enter the number of days: ";
+    std::cin >> numDays;
+
+    std::cout << "Enter the stock prices for " << numDays << " days:\n";
+    for (int i = 0; i < numDays; ++i) {
+        int price;
+        std::cin >> price;
+        int span = spanner.next(price);
+        std::cout << "Span for day " << (i + 1) << ": " << span << std::endl;
+    }
+
+    return 0;
+}

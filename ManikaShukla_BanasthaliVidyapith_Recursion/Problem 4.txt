@@ -1,0 +1,35 @@
+Problem 4:
+Towers of Hanoi: In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can
+slide onto any tower. The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e., each disk sits on
+top of an even larger one).
+You have the following constraints:
+(1) Only one disk can be moved at a time.
+(2) A disk is slid off the top of one tower onto another tower.
+(3) A disk cannot be placed on top of a smaller disk.
+Write a program to move the disks from the first tower to the last and print the moves.
+CODE:
+#include <iostream>
+
+void moveDisk(int disk, char source, char destination) {
+    std::cout << "Move disk " << disk << " from " << source << " to " << destination << std::endl;
+}
+
+void towersOfHanoi(int disks, char source, char auxiliary, char destination) {
+    if (disks == 1) {
+        moveDisk(disks, source, destination);
+    } else {
+        towersOfHanoi(disks - 1, source, destination, auxiliary);
+        moveDisk(disks, source, destination);
+        towersOfHanoi(disks - 1, auxiliary, source, destination);
+    }
+}
+
+int main() {
+    int numDisks;
+    std::cout << "Enter the number of disks: ";
+    std::cin >> numDisks;
+
+    towersOfHanoi(numDisks, 'A', 'B', 'C');
+
+    return 0;
+}

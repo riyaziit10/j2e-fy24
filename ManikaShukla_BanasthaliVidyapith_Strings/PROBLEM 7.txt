@@ -1,0 +1,31 @@
+/* PROBLEM 7:
+Given a string, how many different substrings exist in it that have no repeating characters? Two substrings are considered
+different if they have a different start or end index.*/
+CODE:
+
+def uniqueSubstringCount(word):
+    substrings = []
+    for i in range(len(word)):
+        temp_word = ""
+        if word[i] not in substrings:
+            substrings.append(word[i])
+        for k in range(len(word)):
+            if (word[i] != word[k] and word[i] + word[k] not in substrings):
+                substrings.append(word[i] + word[k])
+            if (word[i] not in temp_word):
+                temp_word += word[i]
+            if (word[k] not in temp_word):
+                temp_word += word[k]
+            for j in range(len(word)):
+                if word[j] in temp_word:
+                    continue
+                elif(word[j] not in temp_word and str(temp_word + word[j]) not in substrings):
+                    temp_word += word[j]
+                    substrings.append(temp_word)
+            temp_word = ""
+    return len(substrings)
+
+
+word = "sky"
+print("Word:", word)
+print("Total substrings with unique characters:", uniqueSubstringCount(word.lower()))
